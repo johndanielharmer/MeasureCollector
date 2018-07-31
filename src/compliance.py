@@ -105,7 +105,15 @@ def compareFiles(expectedFileNames, actualFileNames, csv=False, csvList=[]):
 def checkReadme(readme, readmeCategories, csv=False, csvList=[]):
 	categoryCount = len(readmeCategories)
 	categoryFound = 0
-	file_object = open(readme, "r")
+	try:
+		file_object = open(readme, "r")
+	except IOError:
+		if (csv == True):
+			csvList.append(0)
+			return csvList
+		else:
+			print "Cannot open README file, check that it exists and is named as per the specification"
+			return []
 	str_list = filter(None, file_object.read().splitlines())
 	#print str_list
 	for entry in str_list:
@@ -113,7 +121,7 @@ def checkReadme(readme, readmeCategories, csv=False, csvList=[]):
 			if (csv == False):
 				print "All Readme Headings found"
 			if (csv==True):
-				csvList.append(0)
+				csvList.append(categoryFound)
 				return csvList
 			return []
 		for category in readmeCategories:
@@ -123,7 +131,7 @@ def checkReadme(readme, readmeCategories, csv=False, csvList=[]):
 	if (csv == False):
 		print "Missing",categoryCount - categoryFound,"Readme Headings, check assignment outline"
 	if (csv==True):
-		csvList.append(categoryCount - categoryFound)
+		csvList.append(categoryFound)
 		return csvList
 	return []
 
@@ -208,7 +216,6 @@ def complianceManager(idirectory, csv=False, csvList=[]):
 	csvList = compareFiles(expectedFileNames,actualFileNames, csv, csvList)
 	csvList = checkReadme(idirectory+"/assign1/README", expectedMakefileCategories, csv, csvList)
 	csvList = improperCount(idirectory, csv, csvList)
-	
 	return csvList
 	#getFunctionHeaders("./assign1/src/hash.c")
 

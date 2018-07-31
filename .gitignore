@@ -1,4 +1,7 @@
 # List of files to ignore
+*~
+*.swp
+*s.swo
 .DS_Store
 src/*.pyc
 studentfolders/*
