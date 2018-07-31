@@ -13,6 +13,10 @@ from keywordcount import getKeywordCount
 from functionscount import countFunctions
 from operatorsOperands import getOperators
 
+#Handles all the measure gatherer functions and can save values to a list for CSV processing by manager.py
+#INPUT: Folder address of the folder to parse for the list of specific measures to calculate. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point
+#OUTPUT: Returns a blank list if CSV is set to false, or a populated list of measures in the directory if csv=true
+
 def measureManager(idirectory, csv=False, csvList=[]):
 	projectFiles = [os.path.join(dirpath, f)
 		for dirpath, dirnames, files in os.walk(idirectory)

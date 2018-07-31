@@ -1,3 +1,20 @@
+#!/usr/bin/env python
+#
+# This script parses c and h files for compliance with the CIS*2750 assignment outline when paired with a corresponding JSON string.
+# Copyright (c) 2018 John Harmer jharmer@uoguelph.ca
+#
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+# REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+# AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+# INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+# LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE
+# OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+# PERFORMANCE OF THIS SOFTWARE.
+
 import sys, getopt, os
 import io, json
 from pprint import pprint
@@ -11,6 +28,9 @@ from cStringIO import StringIO
 import subprocess
 from includecheck import improperCount
 
+#Parse the JSON string for information and translate that into a list which can be interpreted by other functions
+#INPUT: The directory passed as a command line argument where student folders exist, the JSON file which was written for the assignment
+#OUTPUT: Four lists which contain all of the expected folder, files, functions and readme headings
 def getExpectedStructure(idirectory, jsonString):
 	expectedFolderNames = []
 	expectedFileNames = []
@@ -49,6 +69,25 @@ def getExpectedStructure(idirectory, jsonString):
 		expectedFunctionDeclarations.append(tempList)
 	return newExpectedFileNames, newExpectedFolderNames, expectedFunctionDeclarations, expectedReadmeStructure
 
+#Scrape a directory for all folders, files and functions in the given directory
+#INPUT: File path to a directory to parse
+#OUTPUT: 3 lists containing the folders, files and function declarations in the directory
+def getActualStructure(path):
+	#print path
+	actualFolders = []
+	actualFiles = []
+	actualFunctions = []
+	for newPath, dirs, files in os.walk(path):
+		#print newPath
+		if (newPath != path):
+			actualFolders.append(newPath)
+		for f in files:
+			if f != '':
+				actualFiles.append(newPath+"/"+f)
+	return actualFolders, actualFiles, actualFunctions
+
+#TO DO: FINALIZE AND UPDATE THIS FUNCTION
+#Currently not used
 def getFunctionHeaders(fileToRead):
 	allHeaders = []
 	count = 0
@@ -66,42 +105,11 @@ def getFunctionHeaders(fileToRead):
 	#print count
 	for header in allHeaders:
 		print header
-	
-def compareFiles(expectedFileNames, actualFileNames, csv=False, csvList=[]):
-	#print "Expected:", expectedFileNames
-	#print "Actual:", actualFileNames
-	found = False
-	missingCount = 0
-	for expected in expectedFileNames:
-		for actual in actualFileNames:
-			if (expected == actual):
-				found = True
-		if (found == False):
-			if (csv == False):
-				print "ERROR: Missing or improperly named file:", expected
-			missingCount = missingCount +1
-		found = False
-	if (csv == False):
-		print "Missing a total of",missingCount,"Files"
-	
-	found = False
-	extraCount = 0
-	for actual in actualFileNames:
-		for expected in expectedFileNames:
-			if (expected == actual):
-				found = True
-		if (found == False):
-			if (csv == False):
-				print "WARNING: Extra non-specification outlined file:", actual
-			extraCount = extraCount +1
-		found = False
-	if (csv == False):
-		print "Directory contains a total of",extraCount,"non-specification outlined files"
-	if (csv==True):
-		csvList.append(missingCount)
-		csvList.append(extraCount)
-		return csvList
-	return []
+
+#Read a README file for specific headers as defined by the JSON compliance file
+#INPUT: The file address of the readme and a list of the expected categories for the readme. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point.
+#OUTPUT: Returns a blank list if CSV is set to false, or a populated list of number of missing headers and unexpected folders in the directory if csv=true
+
 def checkReadme(readme, readmeCategories, csv=False, csvList=[]):
 	categoryCount = len(readmeCategories)
 	categoryFound = 0
@@ -135,6 +143,47 @@ def checkReadme(readme, readmeCategories, csv=False, csvList=[]):
 		return csvList
 	return []
 
+#Compares expected file structure to actual file structure in a given directory
+#INPUT: A list of expected file names populated from the JSON string passed to this file, a list of actual file names created by scraping the directory being parsed. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point
+#OUTPUT: Returns a blank list if CSV is set to false, or a populated list of number of missing files and unexpected files in the directory if csv=true
+def compareFiles(expectedFileNames, actualFileNames, csv=False, csvList=[]):
+	found = False
+	missingCount = 0
+	for expected in expectedFileNames:
+		for actual in actualFileNames:
+			if (expected == actual):
+				found = True
+		if (found == False):
+			if (csv == False):
+				print "ERROR: Missing or improperly named file:", expected
+			missingCount = missingCount +1
+		found = False
+	if (csv == False):
+		print "Missing a total of",missingCount,"Files"
+	
+	found = False
+	extraCount = 0
+	for actual in actualFileNames:
+		for expected in expectedFileNames:
+			if (expected == actual):
+				found = True
+		if (found == False):
+			if (csv == False):
+				print "WARNING: Extra non-specification outlined file:", actual
+			extraCount = extraCount +1
+		found = False
+	if (csv == False):
+		print "Directory contains a total of",extraCount,"non-specification outlined files"
+	if (csv==True):
+		csvList.append(missingCount)
+		csvList.append(extraCount)
+		return csvList
+	return []
+
+
+#Compares expected folder structure to actual folder structure in a given directory
+#INPUT: A list of expected folder names populated from the JSON string passed to this file, a list of actual folder names created by scraping the directory being parsed. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point
+#OUTPUT: Returns a blank list if CSV is set to false, or a populated list of number of missing folders and unexpected folders in the directory if csv=true
 def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]):
 	#print "Expected:", expectedFolderNames
 	#print "Actual:", actualFolderNames
@@ -171,22 +220,10 @@ def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]
 		csvList.append(extraCount)
 		return csvList
 	return []
-	
-def getActualStructure(path):
-	#print path
-	actualFolders = []
-	actualFiles = []
-	actualFunctions = []
-	for newPath, dirs, files in os.walk(path):
-		#print newPath
-		if (newPath != path):
-			actualFolders.append(newPath)
-		for f in files:
-			if f != '':
-				actualFiles.append(newPath+"/"+f)
-	#print actualFolders
-	#print actualFolders
-	return actualFolders, actualFiles, actualFunctions
+
+#Handles all the compliance measures being calculated.
+#Input: A folder with student submission inside. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point
+#OUTPUT: Returns a blank list if CSV is set to false, or a populated list of number of measures calculated by this file if csv=true
 
 def complianceManager(idirectory, csv=False, csvList=[]):
 	actualFolderNames = []
