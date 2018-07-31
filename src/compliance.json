@@ -1,0 +1,53 @@
+{
+    "compliance": 
+     {
+		"folderNames": [
+			"assign1",
+			"assign1/bin",
+			"assign1/include",
+			"assign1/src"
+		],
+		"fileNames": [
+			"assign1/src/GEDCOMparser.c",
+			"assign1/src/GEDCOMutilities.c",
+			"assign1/src/LinkedListAPI.c",
+			"assign1/include/GEDCOMparser.h",
+			"assign1/include/GEDCOMutilities.h",
+			"assign1/include/LinkedListAPI.h",
+			"assign1/Makefile",
+			"assign1/README"
+		],
+		"functionNames": {
+			"assign1/src/GEDCOMparser.c": ["Test1", "Test10"],
+			"assign1/src/GEDCOMutilities.c": ["Test2"],
+			"assign1/src/LinkedListAPI.c": ["Test4"],
+			"assign1/include/GEDCOMparser.h": ["Test5"],
+			"assign1/include/GEDCOMutilities.h": ["Test6"],
+			"assign1/include/LinkedListAPI.h": ["Test8"]
+		},
+		"readmeCategories": [
+			"Student Identification",
+			"Known Issues",
+			"List of References"
+		],
+		"outputFiles": [
+			"assign1/GEDCOMFindPerson.o",	
+			"assign1/GEDCOMTestDelete.o",	
+			"assign1/LinkedListAPI.o",
+			"assign1/GEDCOMGetDescendants.o",	
+			"assign1/GEDCOMTestPrint.o",	
+			"assign1/ListTestCases.o",
+			"assign1/GEDCOMInvalidFiles.o",	
+			"assign1/GEDCOMTestUtilities.o",	
+			"assign1/TestFunctions.o",
+			"assign1/GEDCOMPrintError.o",	
+			"assign1/GEDCOMparser.o",		
+			"assign1/TestHarness.o",
+			"assign1/GEDCOMTest.o",		
+			"assign1/GEDCOMtests",
+			"assign1/GEDCOMTestCreate.o",	
+			"assign1/GEDCOMutilities.o"
+			
+		]
+	}
+}

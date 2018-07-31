@@ -1,0 +1,4 @@
+# List of files to ignore
+.DS_Store
+src/*.pyc
+studentfolders/*
