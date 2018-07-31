@@ -2,3 +2,6 @@
 .DS_Store
 src/*.pyc
 studentfolders/*
+
+#Exceptions
+!studentfolders/.gitkeep
