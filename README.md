@@ -4,16 +4,18 @@ This is the Measure Collector for the CIS*2750 IFS project. Note that it has no 
 How to Run
 
 1. Ensure ctags is installed
+
 Type 'brew install ctags' on OSX to install the ctags tool. ctags is not installed on the SOCS server currently, which may be an issue in the future.
 
 2. Place student files in designated folder
+
 Navigate to the MeasureCollector folder. Extract all student folders which are being evaluated to the studentfolders folder. NOTE: Must be in the format of 'MeasureCollector/studentfolders/*/assign1'. If the student folders are not named assign1 then I will have to do a little modification on the code as it's not entirely modular yet.
 
 3. Execution
 
 Once all the student code is extracted in this format, do the following:
 
-In the MeasureCollector folder, type 'python manager.py -d studentfolders [-c true] [-o measureResults.csv]'.
+In the MeasureCollector folder, type 'python manager.py -d studentfolders [-c] [-o <output/file/location.csv>]'.
 
 The -c and the -o flags are optional. -c indicates a CSV output file will be generated based on the results of the parsing. -o will indicate the output file name and location of the csv file, with a default of output.csv. The tool will not print output to the screen other than a starting notice or error notices when running with -c.
 

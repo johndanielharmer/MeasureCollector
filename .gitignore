@@ -1,10 +1,12 @@
 # List of files to ignore
 *~
 *.swp
-*s.swo
+*.swo
+*.csv
 .DS_Store
 src/*.pyc
 studentfolders/*
+tests/*
 
 #Exceptions
 !studentfolders/.gitkeep

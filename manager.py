@@ -24,13 +24,13 @@ def main(argv):
 		sys.exit()
 	else:
 		#Get command line arguments and put them into list
-		options = { 'tool':'', 'includecheck':'', 'jsonInput':'', 'ifsOff':'',
-					'dir':'', 'output':'', 'csv':''
+		options = { 'tool':'', 'directory':'', 'jsonInput':'', 'ifsOff':'',
+					'csv':'', 'output':'', 'help':''
 					}
 
 		# define command line arguments and check if the script call is valid
-		opts, args = getopt.getopt(argv,'t:d:j:i:c:o:h',
-			['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv=','output=','help'])
+		opts, args = getopt.getopt(argv,'t:d:j:i:co:h',
+			['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','help'])
 		
 		#Set options and tool being selected
 		#Currentl only grabs includecheck.py but can be expanded in the future
@@ -47,8 +47,10 @@ def main(argv):
 			elif opt in ('--ifsOff', '-i'):
 				options['ifs'] = False
 			elif opt in ('--csv', '-c'):
-				options['csv'] = arg
+				print arg
+				options['csv'] = True
 			elif opt in ('--output', '-o'):
+				#print arg
 				csvFileAddress = arg
 				
 
@@ -60,7 +62,7 @@ def main(argv):
 	studentFiles = glob.glob(idirectory+'/*')
 	studentFolders = filter(lambda f: os.path.isdir(f), studentFiles)
 	#print studentFolders
-	if options['csv'] != 'true':
+	if options['csv'] != True:
 		print "---------- BEGINNING CALCULATION ----------"
 	
 		for folder in studentFolders:
@@ -94,7 +96,7 @@ def main(argv):
 			'Extra-Non-Specification-Folders',
 			'Missing-Expected-Files',
 			'Extra-Non-Specification-Files',
-			'Expected-Readme-Headings-Found',
+			'Expected-Readme-Headings-Missing',
 			'Total-number-of-improper/hardcoded-include-paths'])
 			
 			print "---------- BEGINNING CSV FILE WRITING ----------"

@@ -117,7 +117,7 @@ def checkReadme(readme, readmeCategories, csv=False, csvList=[]):
 		file_object = open(readme, "r")
 	except IOError:
 		if (csv == True):
-			csvList.append(0)
+			csvList.append(categoryCount)
 			return csvList
 		else:
 			print "Cannot open README file, check that it exists and is named as per the specification"
@@ -129,7 +129,7 @@ def checkReadme(readme, readmeCategories, csv=False, csvList=[]):
 			if (csv == False):
 				print "All Readme Headings found"
 			if (csv==True):
-				csvList.append(categoryFound)
+				csvList.append(0)
 				return csvList
 			return []
 		for category in readmeCategories:
@@ -139,7 +139,7 @@ def checkReadme(readme, readmeCategories, csv=False, csvList=[]):
 	if (csv == False):
 		print "Missing",categoryCount - categoryFound,"Readme Headings, check assignment outline"
 	if (csv==True):
-		csvList.append(categoryFound)
+		csvList.append(categoryCount - categoryFound)
 		return csvList
 	return []
 
