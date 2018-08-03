@@ -34,7 +34,7 @@ def measureManager(idirectory, csv=False, csvList=[]):
 			print "Average function length is unknown, functions not found."
 	if csv==True:
 		if (functionsCount != 0):
-			csvList.append(SLOCTotalCount / float(functionsCount))
+			csvList.append(float("{0:.2f}".format(SLOCTotalCount / float(functionsCount))))
 		else:
 			csvList.append("Error: No functions found")
 	csvList = getOperators(projectFiles, csv, csvList)
