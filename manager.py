@@ -96,6 +96,7 @@ def main(argv):
 			'Extra-Non-Specification-Folders',
 			'Missing-Expected-Files',
 			'Extra-Non-Specification-Files',
+			'Missing-Expected-Functions',
 			'Expected-Readme-Headings-Missing',
 			'Total-number-of-improper/hardcoded-include-paths'])
 			

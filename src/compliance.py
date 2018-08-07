@@ -27,6 +27,7 @@ import glob
 from cStringIO import StringIO
 import subprocess
 from includecheck import improperCount
+from functionscount import getCtagsInfo
 
 #Parse the JSON string for information and translate that into a list which can be interpreted by other functions
 #INPUT: The directory passed as a command line argument where student folders exist, the JSON file which was written for the assignment
@@ -52,21 +53,23 @@ def getExpectedStructure(idirectory, jsonString):
 	for efn in expectedFileNames:
 		newExpectedFileNames.append(idirectory+"/"+efn)
 	newExpectedFileNames = [str(x) for x in newExpectedFileNames]
-	[x.encode('UTF8') for x in expectedFileNames]
+	[x.encode('ascii') for x in expectedFileNames]
 	expectedReadmeStructure = data["compliance"]["readmeCategories"]
-	[x.encode('UTF8') for x in expectedReadmeStructure]
+	[x.encode('ascii') for x in expectedReadmeStructure]
 	
 	for files in expectedFileNames:
 		tempList = []
 		try:
 			for functions in data["compliance"]["functionNames"][files]:
-				tempList.append(functions.encode("utf-8"))
+				tempList.append(functions.encode("ascii"))
 		except:
 			#Do nothing
 			pass
-			
-		expectedFunctionDeclarations.append(files.encode("utf-8"))
-		expectedFunctionDeclarations.append(tempList)
+		
+		if (len(tempList) > 0):
+			expectedFunctionDeclarations.append(files.encode("ascii"))
+			expectedFunctionDeclarations.append(tempList)
+	#print expectedFunctionDeclarations
 	return newExpectedFileNames, newExpectedFolderNames, expectedFunctionDeclarations, expectedReadmeStructure
 
 #Scrape a directory for all folders, files and functions in the given directory
@@ -84,27 +87,12 @@ def getActualStructure(path):
 		for f in files:
 			if f != '':
 				actualFiles.append(newPath+"/"+f)
+	#print actualFiles
+	projectFiles = [os.path.join(dirpath, f)
+		for dirpath, dirnames, files in os.walk(path)
+		for f in files if (f.endswith('.c')) or (f.endswith('.h'))]
+	actualFunctions = getCtagsInfo(projectFiles)
 	return actualFolders, actualFiles, actualFunctions
-
-#TO DO: FINALIZE AND UPDATE THIS FUNCTION
-#Currently not used
-def getFunctionHeaders(fileToRead):
-	allHeaders = []
-	count = 0
-	result = subprocess.Popen(['ctags', '-x', '--c-types=f', fileToRead], stdout=subprocess.PIPE)
-	#print (result.stdout.decode('utf-8'))
-	while True:
-		line = result.stdout.readline()
-		#print line
-		if line == '':
-			break
-		else:
-			#print line.strip()
-			allHeaders.append(line.strip())
-			count = count+1
-	#print count
-	for header in allHeaders:
-		print header
 
 #Read a README file for specific headers as defined by the JSON compliance file
 #INPUT: The file address of the readme and a list of the expected categories for the readme. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point.
@@ -221,6 +209,35 @@ def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]
 		return csvList
 	return []
 
+def compareFunctions(expectedFunctionNames, actualFunctionNames, csv=False, csvList=[]):
+	tempList = []
+	i = 0
+	found = False
+	missingCount = 0
+	#print len(expectedFunctionNames)
+	for i in range(0, len(expectedFunctionNames), 2):
+		fileName = expectedFunctionNames[i]
+		#print i
+		for actual in actualFunctionNames:
+			if fileName in actual:
+				tempList.append(actual)
+		for listFunction in expectedFunctionNames[i+1]:
+			lowerCaseFunction = listFunction.lower()
+			for fileFunction in tempList:
+				if lowerCaseFunction in fileFunction.lower():
+					found = True
+			if found == False:
+				#print "Missing or improperly named Function:", fileFunction
+				missingCount = missingCount + 1	
+		found = False
+		tempList = []	
+	if (csv == False):
+		print "Missing a total of",missingCount,"Functions"
+
+	if (csv==True):
+		csvList.append(missingCount)
+		return csvList
+	return []
 #Handles all the compliance measures being calculated.
 #Input: A folder with student submission inside. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point
 #OUTPUT: Returns a blank list if CSV is set to false, or a populated list of number of measures calculated by this file if csv=true
@@ -236,8 +253,16 @@ def complianceManager(idirectory, csv=False, csvList=[]):
 	
 	expectedFileNames, expectedFolderNames, expectedFunctionDeclarations, expectedMakefileCategories = getExpectedStructure(idirectory, "src/compliance.json")
 
+	#actualFunctionNames = getCtagsInfo(idirectory)
+
 	actualFolderNames, actualFileNames, actualFunctionDeclarations = getActualStructure(idirectory)
 
+
+	#print "EXPECTED FUNCTIONS"
+	#print expectedFunctionDeclarations
+	
+	#print "ACTUAL FUNCTIONS"
+	#print actualFunctionDeclarations
 	
 	for entry in expectedFileNames:
 		entry = entry.encode("utf-8")
@@ -251,8 +276,12 @@ def complianceManager(idirectory, csv=False, csvList=[]):
 	
 	csvList = compareFolders(expectedFolderNames,actualFolderNames, csv, csvList)
 	csvList = compareFiles(expectedFileNames,actualFileNames, csv, csvList)
+	csvList = compareFunctions(expectedFunctionDeclarations,actualFunctionDeclarations, csv, csvList)
 	csvList = checkReadme(idirectory+"/assign1/README", expectedMakefileCategories, csv, csvList)
 	csvList = improperCount(idirectory, csv, csvList)
+	#print expectedFunctionDeclarations
+	#print actualFunctionDeclarations
+	
 	return csvList
 	#getFunctionHeaders("./assign1/src/hash.c")
 

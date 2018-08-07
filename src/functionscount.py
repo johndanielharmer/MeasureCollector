@@ -5,8 +5,25 @@ import re
 import glob
 from glob import glob
 
-def countFunctions(filesToRead, csv=False, csvList=[]):
-	count = 0
+def generateFunctionJSON(allFunctions):
+	print '"functionNames": {'
+	start = True
+	foundFileName = ''
+	for entry in allFunctions:
+		tempFile = entry.split()
+		if tempFile[0] != foundFileName:
+			if start == False:
+				print '],'
+			foundFileName = tempFile[0]
+			print '"'+foundFileName+'": ['
+			start = False
+		print '"'+tempFile[1]+'",'
+	print ']'
+	print '}'
+	
+	
+def getCtagsInfo(filesToRead):
+	allEntries = []
 	#filesToRead = glob(fileDirectory+'/*.c') + glob(fileDirectory+'/*.h')
 	with open('files_to_read.txt', 'w') as the_file:
 		for file in filesToRead:
@@ -16,18 +33,37 @@ def countFunctions(filesToRead, csv=False, csvList=[]):
 	#print (result.stdout.decode('utf-8'))
 	while True:
 		line = result.stdout.readline()
-		#print line
-		if line == '':
+		if len(line) == 0:
 			break
-		else:
-			count = count+1
+		functions = line.split()
+		functionString = ''
+		functionFile = functions[3]
+		for partialString in functions[4:]:
+			functionString = functionString + partialString
+		functionString = functionString.replace('{','')
+		#print functionFile,",",functionString
+		allEntries.append(functionFile+" "+functionString)
+		#print functions
+	os.remove("files_to_read.txt")
+	return allEntries
+	
+def countFunctions(filesToRead, csv=False, csvList=[]):
+	count = 0
+	allEntries = []
+	allEntries = getCtagsInfo(filesToRead)
+	#print allEntries
+	count = len(allEntries)
+	allEntries.sort(key=lambda v: v.upper())
+	#for entries in allEntries:
+		#print entries
+	#generateFunctionJSON(allEntries)
 	if (csv == False):
 		print "Total number of functions in directory =", count
 		if (len(filesToRead) != 0):
 			print "Average number of functions per module =", count / float(len(filesToRead))
 		else:
 			print "Cannot calculate average number of functions. Check ctags is installed"
-	os.remove("files_to_read.txt")
+
 	if (csv==True):
 		csvList.append(count)
 		if (len(filesToRead) != 0):
