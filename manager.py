@@ -15,6 +15,8 @@ from compliance import complianceManager
 from MeasureCollector import measureManager
 
 def main(argv):
+	i=0
+	anon=False
 	csvFileAddress = "output.csv"
 	csvList = []
 	idirectory = ''
@@ -25,12 +27,12 @@ def main(argv):
 	else:
 		#Get command line arguments and put them into list
 		options = { 'tool':'', 'directory':'', 'jsonInput':'', 'ifsOff':'',
-					'csv':'', 'output':'', 'help':''
+					'csv':'', 'output':'', 'anon':'','help':''
 					}
 
 		# define command line arguments and check if the script call is valid
-		opts, args = getopt.getopt(argv,'t:d:j:i:co:h',
-			['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','help'])
+		opts, args = getopt.getopt(argv,'t:d:j:i:co:ah',
+			['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','help'])
 		
 		#Set options and tool being selected
 		#Currentl only grabs includecheck.py but can be expanded in the future
@@ -47,12 +49,13 @@ def main(argv):
 			elif opt in ('--ifsOff', '-i'):
 				options['ifs'] = False
 			elif opt in ('--csv', '-c'):
-				print arg
 				options['csv'] = True
 			elif opt in ('--output', '-o'):
 				#print arg
 				csvFileAddress = arg
-				
+			elif opt in ('--anon', '-a'):
+				#print arg
+				anon = True
 
 
 		if idirectory != '':
@@ -72,7 +75,7 @@ def main(argv):
 	else:
 		with open(csvFileAddress,'wb') as csvFile:
 			filewriter = csv.writer(csvFile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-			filewriter.writerow(['Folder-Name',
+			filewriter.writerow(['User',
 			'Total-LOC',
 			'Total-SLOC',
 			'Total-Comment-Count',
@@ -103,12 +106,17 @@ def main(argv):
 			print "---------- BEGINNING CSV FILE WRITING ----------"
 
 			for folder in studentFolders:
+				i=i+1
 				csvListMeasure = []
 				csvListCompliance = []
 				csvList = []
 				csvListMeasure = measureManager(folder, True, csvListMeasure)
 				csvListCompliance = complianceManager(folder, True, csvListCompliance)
-				csvList = [folder]+csvListMeasure + csvListCompliance
+				if (anon == True):
+					userName = "user"+str(i)
+					csvList = [userName]+csvListMeasure + csvListCompliance
+				else:
+					csvList = [folder]+csvListMeasure + csvListCompliance
 				#print ''
 				#print csvList
 				filewriter.writerow(csvList)

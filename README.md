@@ -15,9 +15,12 @@ Navigate to the MeasureCollector folder. Extract all student folders which are b
 
 Once all the student code is extracted in this format, do the following:
 
-In the MeasureCollector folder, type 'python manager.py -d studentfolders [-c] [-o <output/file/location.csv>]'.
+In the MeasureCollector folder, type 'python manager.py -d studentfolders [-c] [-a] [-o <output/file/location.csv>] '.
 
-The -c and the -o flags are optional. -c indicates a CSV output file will be generated based on the results of the parsing. -o will indicate the output file name and location of the csv file, with a default of output.csv. The tool will not print output to the screen other than a starting notice or error notices when running with -c.
+Optional Flags
+-c indicates a CSV output file will be generated based on the results of the parsing.
+-o will indicate the output file name and location of the csv file, with a default of output.csv. The tool will not print output to the screen other than a starting notice or error notices when running with -c.
+-a anonymizes the user submission folder names
 
 Notes:
 Some compliance measures (Files in the correct place/files have correct names, folders in the correct place/folders have correct names) are merged into single checks rather than two unique checks. The system cannot yet determine if the file is named correctly but put into the wrong spot. If the folder is named wrong, all the files inside it will be deemed incorrectly named as well. This can be addressed in the future if necessary.
