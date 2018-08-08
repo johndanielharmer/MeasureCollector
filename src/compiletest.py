@@ -35,6 +35,20 @@ def copyFiles(studentFolder, destination, excludeFiles=[]):
 def main():
 	copyFiles("./tests/testFiles/assign1/src", "./compiletest/studentCode")
 	copyFiles("./tests/testFiles/assign1/include", "./compiletest/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+	print "STARTING STEP 1"
+	result = subprocess.Popen("./.subexecute.sh", stdout=subprocess.PIPE).communicate()
+	print "HELLO"
+	newresult = list(result)
+	newresult = newresult[:-1]
+	for entry in newresult:
+		print entry
+	print "STARTING STEP 2"
+	subprocess.call("./.cleanup.sh", stdout=subprocess.PIPE)
+	#print result
+	#result = subprocess.Popen("./.cleanup.sh", stdout=subprocess.PIPE)
+	#print result
+	#print "STARTING STEP 3"
+	
 	#result = subprocess.Popen(['ls', '-l'], stdout=subprocess.PIPE)
 	#result = subprocess.Popen(['make', '-C', './compiletest'], stdout=subprocess.PIPE)
 	#result = subprocess.Popen(['./compiletest/bin/GEDCOMtests'], stdout=subprocess.PIPE)
