@@ -67,7 +67,7 @@ def countFunctions(filesToRead, csv=False, csvList=[]):
 	if (csv==True):
 		csvList.append(count)
 		if (len(filesToRead) != 0):
-			csvList.append(count / float(len(filesToRead)))
+			csvList.append(round(count / float(len(filesToRead)),2))
 		else:
 			return csvList.append("Error: No Functions Found")
 		return count, csvList

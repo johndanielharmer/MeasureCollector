@@ -56,9 +56,9 @@ def CountLOC(dir, csv=False, csvList=[]):
 		csvList.append(SLOCCountTotal + commentCountTotal - comboCountTotal)
 		csvList.append(SLOCCountTotal)
 		csvList.append(commentCountTotal)
-		csvList.append((SLOCCountTotal + commentCountTotal) / float(len(SLOCCountList)))
-		csvList.append(SLOCCountTotal / float(len(SLOCCountList)))
-		csvList.append(commentCountTotal / float(len(commentCountList)))
+		csvList.append(round((SLOCCountTotal + commentCountTotal) / float(len(SLOCCountList)),2))
+		csvList.append(round(SLOCCountTotal / float(len(SLOCCountList)),2))
+		csvList.append(round(commentCountTotal / float(len(commentCountList)),2))
 		return SLOCCountTotal, csvList
 	return SLOCCountTotal, []
 

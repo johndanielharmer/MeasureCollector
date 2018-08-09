@@ -11,7 +11,11 @@ Type 'brew install ctags' on OSX to install the ctags tool. ctags is not install
 
 Navigate to the MeasureCollector folder. Extract all student folders which are being evaluated to the studentfolders folder. NOTE: Must be in the format of 'MeasureCollector/studentfolders/*/assign1'. If the student folders are not named assign1 then I will have to do a little modification on the code as it's not entirely modular yet.
 
-3. Execution
+3. Extract compilation test files
+
+Type "./setup.sh" into the terminal to extract the test harness and ensure folders are all named correctly
+
+4. Execution
 
 Once all the student code is extracted in this format, do the following:
 

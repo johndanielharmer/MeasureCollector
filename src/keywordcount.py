@@ -78,9 +78,9 @@ def getKeywordCount(projectFiles, csv=False, csvList=[]):
 	
 	if (csv==True):
 		csvList.append(sum(type[1]))
-		csvList.append(sum(type[1]) / float(len(projectFiles)))
+		csvList.append(round(sum(type[1]) / float(len(projectFiles)),2))
 		csvList.append(sum(flow[1]))
-		csvList.append(sum(flow[1]) / float(len(projectFiles)))
+		csvList.append(round(sum(flow[1]) / float(len(projectFiles)),2))
 		csvList.append(total)
 		csvList.append(average)
 		return csvList

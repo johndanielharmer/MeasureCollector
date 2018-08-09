@@ -13,6 +13,7 @@ import csv
 
 from compliance import complianceManager
 from MeasureCollector import measureManager
+from compiletest import compileManager
 
 def main(argv):
 	i=0
@@ -71,6 +72,7 @@ def main(argv):
 		for folder in studentFolders:
 			measureManager(folder)
 			complianceManager(folder)
+			csvListCompilation = compileManager(folder)
 			print ''
 	else:
 		with open(csvFileAddress,'wb') as csvFile:
@@ -101,7 +103,8 @@ def main(argv):
 			'Extra-Non-Specification-Files',
 			'Missing-Expected-Functions',
 			'Expected-Readme-Headings-Missing',
-			'Total-number-of-improper/hardcoded-include-paths'])
+			'Total-number-of-improper/hardcoded-include-paths',
+			'Compilation-Success'])
 			
 			print "---------- BEGINNING CSV FILE WRITING ----------"
 
@@ -109,14 +112,16 @@ def main(argv):
 				i=i+1
 				csvListMeasure = []
 				csvListCompliance = []
+				csvListCompilation = []
 				csvList = []
 				csvListMeasure = measureManager(folder, True, csvListMeasure)
 				csvListCompliance = complianceManager(folder, True, csvListCompliance)
+				csvListCompilation = compileManager(folder, True, csvListCompilation)
 				if (anon == True):
 					userName = "user"+str(i)
-					csvList = [userName]+csvListMeasure + csvListCompliance
+					csvList = [userName]+csvListMeasure + csvListCompliance + csvListCompilation
 				else:
-					csvList = [folder]+csvListMeasure + csvListCompliance
+					csvList = [folder]+csvListMeasure + csvListCompliance + csvListCompilation
 				#print ''
 				#print csvList
 				filewriter.writerow(csvList)
