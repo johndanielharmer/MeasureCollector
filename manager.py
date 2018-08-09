@@ -18,6 +18,8 @@ from compiletest import compileManager
 def main(argv):
 	i=0
 	anon=False
+	runHarness=False
+	showErrors=False
 	csvFileAddress = "output.csv"
 	csvList = []
 	idirectory = ''
@@ -28,12 +30,12 @@ def main(argv):
 	else:
 		#Get command line arguments and put them into list
 		options = { 'tool':'', 'directory':'', 'jsonInput':'', 'ifsOff':'',
-					'csv':'', 'output':'', 'anon':'','help':''
+					'csv':'', 'output':'', 'anon':'','runharness':'','showerrors':'','help':''
 					}
 
 		# define command line arguments and check if the script call is valid
-		opts, args = getopt.getopt(argv,'t:d:j:i:co:ah',
-			['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','help'])
+		opts, args = getopt.getopt(argv,'t:d:j:i:co:areh',
+			['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','runharness','help'])
 		
 		#Set options and tool being selected
 		#Currentl only grabs includecheck.py but can be expanded in the future
@@ -57,6 +59,12 @@ def main(argv):
 			elif opt in ('--anon', '-a'):
 				#print arg
 				anon = True
+			elif opt in ('--runharness', '-r'):
+				#print arg
+				runHarness = True
+			elif opt in ('--showerrors', '-e'):
+				#print arg
+				showErrors = True
 
 
 		if idirectory != '':
@@ -72,7 +80,7 @@ def main(argv):
 		for folder in studentFolders:
 			measureManager(folder)
 			complianceManager(folder)
-			csvListCompilation = compileManager(folder)
+			csvListCompilation = compileManager(folder, runHarness, showErrors)
 			print ''
 	else:
 		with open(csvFileAddress,'wb') as csvFile:
@@ -116,7 +124,7 @@ def main(argv):
 				csvList = []
 				csvListMeasure = measureManager(folder, True, csvListMeasure)
 				csvListCompliance = complianceManager(folder, True, csvListCompliance)
-				csvListCompilation = compileManager(folder, True, csvListCompilation)
+				csvListCompilation = compileManager(folder, runHarness, showErrors, True, csvListCompilation)
 				if (anon == True):
 					userName = "user"+str(i)
 					csvList = [userName]+csvListMeasure + csvListCompliance + csvListCompilation

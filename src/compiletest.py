@@ -37,7 +37,7 @@ def copyFiles(studentFolder, destination, excludeFiles=[]):
 #Runs the compile, testing and cleanup script. Also checks output and either displays it or stores it for CSV purposes.
 #INPUT: Folder address of the folder to parse for the list of specific measures to calculate. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point
 #OUTPUT: Returns a blank list if CSV is set to false, or a populated list of measures in the directory if csv=true
-def compileManager(projectFiles, csv=False, csvList=[]):
+def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 	srcDirectory = "./"+projectFiles+"/assign1/src"
 	includeDirectory = "./"+projectFiles+"/assign1/include"
 	
@@ -47,22 +47,33 @@ def compileManager(projectFiles, csv=False, csvList=[]):
 
 	#Execute the .subexecute script
 	#Makes the test harness with the new student files, then runs the script
-	result = subprocess.Popen("./.subexecute.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	if (runharness == True):
+		result = subprocess.Popen("./.subexecute.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 
+	else:
+		result = subprocess.Popen("./.checkharness.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 	#Trim garbage output
 	listResult = list(result)
-	listResult = listResult[:-1]
 
 	#Look for warning that the script failed
 	#TO DO: Implement a better method in the future
 	if "Exiting" in listResult[0]:
 		if (csv==True):
 			csvList.append("Failure")
+		else:
+			print "Compilation Success: False"
+			if (showErrors == True):
+				print listResult[1]
+				print listResult[0]
+			
 	else:
 		if (csv==True):
 			csvList.append("Success")
-	if (csv==False):
-		print listResult[0]
+			#print "Compilation Success: True"
+		elif (csv==False):
+			print "Compilation Success: True"
+			if (runharness == True):
+				print listResult[0]
 	
 	#Call the cleanup script
 	#Remove all student files and leftover files from the project
