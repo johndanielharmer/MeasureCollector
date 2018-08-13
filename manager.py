@@ -13,8 +13,13 @@ import csv
 
 from compliance import complianceManager
 from MeasureCollector import measureManager
+from compiletest import compileManager
 
 def main(argv):
+	i=0
+	anon=False
+	runHarness=False
+	showErrors=False
 	csvFileAddress = "output.csv"
 	csvList = []
 	idirectory = ''
@@ -25,12 +30,12 @@ def main(argv):
 	else:
 		#Get command line arguments and put them into list
 		options = { 'tool':'', 'directory':'', 'jsonInput':'', 'ifsOff':'',
-					'csv':'', 'output':'', 'help':''
+					'csv':'', 'output':'', 'anon':'','runharness':'','showerrors':'','help':''
 					}
 
 		# define command line arguments and check if the script call is valid
-		opts, args = getopt.getopt(argv,'t:d:j:i:co:h',
-			['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','help'])
+		opts, args = getopt.getopt(argv,'t:d:j:i:co:areh',
+			['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','runharness','help'])
 		
 		#Set options and tool being selected
 		#Currentl only grabs includecheck.py but can be expanded in the future
@@ -47,12 +52,19 @@ def main(argv):
 			elif opt in ('--ifsOff', '-i'):
 				options['ifs'] = False
 			elif opt in ('--csv', '-c'):
-				print arg
 				options['csv'] = True
 			elif opt in ('--output', '-o'):
 				#print arg
 				csvFileAddress = arg
-				
+			elif opt in ('--anon', '-a'):
+				#print arg
+				anon = True
+			elif opt in ('--runharness', '-r'):
+				#print arg
+				runHarness = True
+			elif opt in ('--showerrors', '-e'):
+				#print arg
+				showErrors = True
 
 
 		if idirectory != '':
@@ -68,11 +80,12 @@ def main(argv):
 		for folder in studentFolders:
 			measureManager(folder)
 			complianceManager(folder)
+			csvListCompilation = compileManager(folder, runHarness, showErrors)
 			print ''
 	else:
 		with open(csvFileAddress,'wb') as csvFile:
 			filewriter = csv.writer(csvFile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-			filewriter.writerow(['Folder-Name',
+			filewriter.writerow(['User',
 			'Total-LOC',
 			'Total-SLOC',
 			'Total-Comment-Count',
@@ -96,18 +109,27 @@ def main(argv):
 			'Extra-Non-Specification-Folders',
 			'Missing-Expected-Files',
 			'Extra-Non-Specification-Files',
+			'Missing-Expected-Functions',
 			'Expected-Readme-Headings-Missing',
-			'Total-number-of-improper/hardcoded-include-paths'])
+			'Total-number-of-improper/hardcoded-include-paths',
+			'Compilation-Success'])
 			
 			print "---------- BEGINNING CSV FILE WRITING ----------"
 
 			for folder in studentFolders:
+				i=i+1
 				csvListMeasure = []
 				csvListCompliance = []
+				csvListCompilation = []
 				csvList = []
 				csvListMeasure = measureManager(folder, True, csvListMeasure)
 				csvListCompliance = complianceManager(folder, True, csvListCompliance)
-				csvList = [folder]+csvListMeasure + csvListCompliance
+				csvListCompilation = compileManager(folder, runHarness, showErrors, True, csvListCompilation)
+				if (anon == True):
+					userName = "user"+str(i)
+					csvList = [userName]+csvListMeasure + csvListCompliance + csvListCompilation
+				else:
+					csvList = [folder]+csvListMeasure + csvListCompliance + csvListCompilation
 				#print ''
 				#print csvList
 				filewriter.writerow(csvList)
