@@ -1,9 +1,8 @@
-all: compiletest.zip
-	unzip compiletest.zip -d .
+all: compiletest
 	mkdir -p ./compiletest/.depend
 	chmod +x .subexecute.sh
 	chmod +x .checkharness.sh
 	chmod +x .cleanup.sh
 
 clean:
-	rm -r compiletest
+	./.cleanup.sh

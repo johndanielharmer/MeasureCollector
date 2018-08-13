@@ -1,0 +1,125 @@
+Test harness layout:
+
+src/GEDCOMTest.c - GEDCOM test main.  Calls functions with individual test cases, which are defined in GEDCOMTestCases.c
+
+src/GEDCOMTestUtilities.c/.h - Helper functions for comparing various structs (1st arg - testArg, 2nd - refArg), as well as list functions (delete/compare/print)
+
+src/GEDCOMTestCases.c - defines test cases. It has two components:
+1. 
+Functions that return reference objects.  Each function creates a correct GEDCOMobject struct for a given test file and returns it
+
+2. 
+Test cases.  Each test case consists of one or more sub-cases. Each sub-case is defined in a separate function, which
+- Creates a reference GEDCOMobject using one of the ref. functions from 1.
+
+- Creates a test GEDCOMobject using student code
+
+- Checks the error code.  
+-- If the test case corresponds to a valid GEDCOM, the error type must be OK. Two GEDCOMobjects are compared the two using objEqual() (defined in 1). If they are equal, test case passes
+-- If the test case corresponds to an invalid GEDCOM or other special cases, other comparisons between test and reference objects are conducted
+
+- The function representing a particular test case executes the functions representing sub-tests using runSubTest().  runSubTest() executes the sub-test in a separate process to isolate segfaults and other fatal errors.  If the sub-test executes without crashing, its message is added to the overall test case feedback.
+
+
+Test cases:
+
+0 - ListAPI test cases (regression testing)
+
+1a. createGEDCOM(), valid files
+
+simpleGEDCOMTest1 - 1 subtest, uses testFiles/valid/minValid.ged
+Header and Submitter only
+
+simpleGEDCOMTest2 - 1 subtest, uses testFiles/valid/oneIndivNoFam.ged
+1 individual, no families.  No events or other fields in individual
+
+simpleGEDCOMTest3 - 1 subtest, uses testFiles/valid/individualsNoFam.ged
+3 individuals, no families.  No events or other fields in individuals
+
+simpleGEDCOMTest4 - 1 subtest, uses testFiles/valid/oneFamNoIndiv.ged
+1 family, no individuals.  No events or other fields in family
+
+simpleGEDCOMTest5 - 1 subtest, uses testFiles/valid/simpleValid1N.ged
+simple nuclear family. husband, wife, child. No events in family or individuals.  Individuals have other fields. File uses LF ending.
+
+simpleGEDCOMTest6 - 1 subtest, uses testFiles/valid/nuclearFamily.ged
+More complex nuclear family: Shakespeare, wife, and kids. Individuals and families have events.  Individuals have other fields.
+
+simpleGEDCOMTest7 - 1 subtest, uses testFiles/valid/simpleValid2Gen.ged
+Simple 2 generations (son of family 1 is husband of family 2). Individuals have other fields.  Individuals have other fields.
+
+simpleGEDCOMTest8 - 1 subtest, uses testFiles/valid/simpleValid2GenE1.ged
+Simple 2 generations (son of family 1 is husband of family 2). Individuals have other fields.  Individuals have other fields. Gen 2 has no wife.
+
+simpleGEDCOMTest9 - 1 subtest, uses testFiles/valid/simpleValid2GenE2.ged
+Simple 2 generations (son of family 1 is husband of family 2). Individuals have other fields.  Individuals have other fields. Gen 2 has no children.
+
+simpleGEDCOMTest10 - 3 subtests, parsing files with line endings other than LF (\n).  Files:
+- testFiles/valid/simpleValid1R.ged
+- testFiles/valid/simpleValid1R1N.ged
+- testFiles/valid/simpleValid1N1R.ged
+
+
+~Additional cases for large GEDCOMs (need diff. test procedure)~
+
+1b. createGEDCOM(), invalid files
+- INV_FILE (NULL, randomFile.ged, randomFile.something)
+- INV_GEDCOM (missing header, missing submitter, missing trailer)
+- INV_HEADER (header starts with non-0, miss.  source, miss. gedVers, miss. encoding, miss. submitter)
+- INV_RECORD (line > 255, wrong level)
+
+
+2 printGEDCOM
+
+printGEDCOMTest - 4 subtests, printing
+- testFiles/valid/simpleValid1N.ged
+- testFiles/valid/nuclearFamily.ged
+- testFiles/valid/individualsNoFam.ged
+- testFiles/valid/simpleValid2GenE2.ged
+
+printGEDCOMTestNULL - 1 subtest, NULL argument
+
+
+3 deleteGEDCOM
+
+deleteGEDCOMTest - 5 subtests, deleting GEDCOMs. Files:
+- testFiles/valid/simpleValid1N.ged
+- testFiles/valid/minValid.ged
+- testFiles/valid/nuclearFamily.ged
+- testFiles/valid/individualsNoFam.ged
+- testFiles/valid/simpleValid2Gen.ged
+
+
+4 printError 
+
+printGEDCOMerrorTest - 6 subtests, one for each error type
+
+
+5 findPerson
+- Test NULL args (all 3 in one test case as subtests)
+- Look for a person in a gedcom with no individuals
+- Look for existing person in small and large gedcoms
+- Look for non-existing person in small and large gedcoms
+
+
+6 getDescendants
+- Test NULL args (2 sub-tests in the same test)
+- Test using the head of individuals list instead of using findPerson 
+- Look for descendants in a gedcom with no individuals using an artificially created Individual struct
+- Look for descendants in simpleValid (existing ind. w. kids, existing ind. w. no kids, non-existent ind.)
+- Look for descendants in simpleValid2Gen (existing ind. w. kids, existing ind. w. no kids, non-existent ind.)
+- Look for descendants in larger gedcomes (1 or 2) (existing ind. w. kids, existing ind. w. no kids, non-existent ind.)
+
+
+7. TODO Makefiles and memory leaks / valgrind
+
+8. Done, other stuff
+
+- Change all existing files to ASCII
+- Add ANSEL encoding (non-ASCII) test
+- ENUM OTHER 2 bin/objs
+- grep for relative paths nice output in Makefile
+
+
+JAKE TODO:
+- Add functions to return “Stats” on GEDCOMobjects (how many individuals, how many families, how many descendants for person X using find person)
