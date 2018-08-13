@@ -21,8 +21,7 @@ def measureManager(idirectory, csv=False, csvList=[]):
 	projectFiles = [os.path.join(dirpath, f)
 		for dirpath, dirnames, files in os.walk(idirectory)
 		for f in files if (f.endswith('.c')) or (f.endswith('.h'))]
-	if (csv == False):
-		print "---------- Measures for directory", idirectory,"----------"
+
 	SLOCTotalCount, csvList = CountLOC(projectFiles, csv, csvList)
 	csvList = calcUnique(projectFiles, csv, csvList)
 	csvList = getKeywordCount(projectFiles, csv, csvList)

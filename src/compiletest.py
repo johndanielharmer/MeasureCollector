@@ -11,6 +11,8 @@ from cStringIO import StringIO
 import subprocess
 import shutil
 
+from compliance import complianceManager
+
 #Copies the contents of a student assignment folder (only .c and .h files are allowed) to the correct position in the destination folder.
 #INPUT: The file location of the root student assignment directory, the destination folder where the files will be copied to, an optional variable which allows for files to be excluded from the copy
 #OUTPUT: Files will be copied from source to destination
@@ -77,6 +79,8 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 	
 	#Call the cleanup script
 	#Remove all student files and leftover files from the project
+	csvListCompliance = complianceManager(projectFiles, csv, [])
+	csvList = csvListCompliance+csvList
 	subprocess.call("./.cleanup.sh", stdout=subprocess.PIPE)
 	return csvList
 
@@ -97,9 +101,9 @@ def main():
 	#Look for warning that the script failed
 	#TO DO: Implement a better method in the future
 	if "Exiting" in listResult[0]:
-		print "PYTHON DETECTS FAILURE"
+		print "Error: Failure to Compile"
 	else:
-		print "PYTHON DETECTS SUCCESS"
+		print "Compilation Success"
 	print listResult[0]
 
 	#Call the cleanup script

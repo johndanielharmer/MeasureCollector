@@ -17,7 +17,7 @@ from compiletest import compileManager
 
 def main(argv):
 	i=0
-	anon=False
+	anon=True
 	runHarness=False
 	showErrors=False
 	csvFileAddress = "output.csv"
@@ -34,8 +34,8 @@ def main(argv):
 					}
 
 		# define command line arguments and check if the script call is valid
-		opts, args = getopt.getopt(argv,'t:d:j:i:co:areh',
-			['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','runharness','help'])
+		opts, args = getopt.getopt(argv,'t:d:j:i:co:avh',
+			['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','verbose','help'])
 		
 		#Set options and tool being selected
 		#Currentl only grabs includecheck.py but can be expanded in the future
@@ -58,13 +58,11 @@ def main(argv):
 				csvFileAddress = arg
 			elif opt in ('--anon', '-a'):
 				#print arg
-				anon = True
-			elif opt in ('--runharness', '-r'):
-				#print arg
-				runHarness = True
-			elif opt in ('--showerrors', '-e'):
+				anon = False
+			elif opt in ('--verbose', '-v'):
 				#print arg
 				showErrors = True
+				runHarness = True
 
 
 		if idirectory != '':
@@ -78,9 +76,16 @@ def main(argv):
 		print "---------- BEGINNING CALCULATION ----------"
 	
 		for folder in studentFolders:
+			i=i+1
+			username = folder
+			if (anon == True):
+				username = "User"+str(i)
+				
+			print "---------- Measures for user", username,"----------"
 			measureManager(folder)
-			complianceManager(folder)
-			csvListCompilation = compileManager(folder, runHarness, showErrors)
+			#complianceManager(folder)
+			print "---------- Compliance for user", username,"----------"
+			compileManager(folder, runHarness, showErrors)
 			print ''
 	else:
 		with open(csvFileAddress,'wb') as csvFile:
@@ -112,6 +117,7 @@ def main(argv):
 			'Missing-Expected-Functions',
 			'Expected-Readme-Headings-Missing',
 			'Total-number-of-improper/hardcoded-include-paths',
+			'Number-Of-Missing-Output-Files',
 			'Compilation-Success'])
 			
 			print "---------- BEGINNING CSV FILE WRITING ----------"
@@ -123,7 +129,7 @@ def main(argv):
 				csvListCompilation = []
 				csvList = []
 				csvListMeasure = measureManager(folder, True, csvListMeasure)
-				csvListCompliance = complianceManager(folder, True, csvListCompliance)
+				#csvListCompliance = complianceManager(folder, True, csvListCompliance)
 				csvListCompilation = compileManager(folder, runHarness, showErrors, True, csvListCompilation)
 				if (anon == True):
 					userName = "user"+str(i)

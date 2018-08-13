@@ -49,33 +49,6 @@
 				"voiddeleteGEDCOM(GEDCOMobject*obj)",
 				"voiddeleteIndividual(void*toBeDeleted)"
 			],
-			"assign1/src/GEDCOMutilities.c": [
-				"char**tokenCreate(constchar*constblock,constchardelimiter,constuint8_tallowEmpty,constuint32_tmaxTokens)",
-				"char*fileGetContents(constchar*filename)",
-				"char*getDate(void)",
-				"char*getTime(void)",
-				"char*integerToASCII(constintinteger)",
-				"char*removeStringCharacter(char*string,constcharremove)",
-				"char*replaceStringCharacter(char*string,constcharreplace,constcharreplacement)",
-				"char*stringConcatenation(char*destination,constchar*constsource,constchardelimiter)",
-				"char*stringCopy(constchar*conststr)",
-				"char*stripWhitespace(char*string)",
-				"FILE*openFile(constchar*constfilename,constchar*mode,constuint8_tfileMustExist)",
-				"intasciiToInteger(constchar*constinteger)",
-				"intstringIsDigit(constchar*conststring,constuint8_tallDigits,constsize_tstringLength)",
-				"intsubstringOccurences(constchar*haystack,constchar*needle)",
-				"intsubstringPosition(constchar*haystack,constchar*needle,intnumberOfPositions)",
-				"inttokenCount(char**token)",
-				"size_tfreadEndian(void*ptr,size_tsize,size_tnmemb,FILE*stream)",
-				"size_tfwriteEndian(constvoid*ptr,size_tsize,size_tnmemb,FILE*stream)",
-				"unsignedlongfileGetContentsBinary(constchar*filename,char**filecontents,constsize_toffset,constsize_tmaxLength,constsize_tsize)",
-				"unsignedlongfileGetContentsBinaryEndian(constchar*filename,char**filecontents,constsize_toffset,constsize_tmaxLength,constsize_tsize,constuint8_tendian)",
-				"voidfileAppendContents(constchar*filename,constchar*contents)",
-				"voidfilePutContents(constchar*filename,constchar*contents)",
-				"voidfilePutContentsBinary(constchar*filename,constvoid*contents,constsize_tcontentsSize,constsize_tsize,constuint8_tappend)",
-				"voidfilePutContentsBinaryEndian(constchar*filename,constvoid*contents,constsize_tcontentsSize,constsize_tsize,uint8_tconstappend,constuint8_tendian)",
-				"voidtokenFree(char**token)"
-			],
 			"assign1/src/LinkedListAPI.c": [
 				"char*toString(Listlist)",
 				"intgetLength(Listlist)",
@@ -99,23 +72,22 @@
 			"List of References"
 		],
 		"outputFiles": [
-			"assign1/bin/GEDCOMFindPerson.o",	
-			"assign1/bin/GEDCOMTestDelete.o",	
-			"assign1/bin/LinkedListAPI.o",
-			"assign1/bin/GEDCOMGetDescendants.o",	
-			"assign1/bin/GEDCOMTestPrint.o",	
-			"assign1/bin/ListTestCases.o",
-			"assign1/bin/GEDCOMInvalidFiles.o",	
-			"assign1/bin/GEDCOMTestUtilities.o",	
-			"assign1/bin/TestFunctions.o",
-			"assign1/bin/GEDCOMPrintError.o",	
-			"assign1/bin/GEDCOMparser.o",		
-			"assign1/bin/TestHarness.o",
-			"assign1/bin/GEDCOMTest.o",		
-			"assign1/bin/GEDCOMtests",
-			"assign1/bin/GEDCOMTestCreate.o",	
-			"assign1/bin/GEDCOMutilities.o"
-			
+			"compiletest/bin/GEDCOMFindPerson.o",	
+			"compiletest/bin/GEDCOMTestDelete.o",	
+			"compiletest/bin/LinkedListAPI.o",
+			"compiletest/bin/GEDCOMGetDescendants.o",	
+			"compiletest/bin/GEDCOMTestPrint.o",	
+			"compiletest/bin/ListTestCases.o",
+			"compiletest/bin/GEDCOMInvalidFiles.o",	
+			"compiletest/bin/GEDCOMTestUtilities.o",	
+			"compiletest/bin/TestFunctions.o",
+			"compiletest/bin/GEDCOMPrintError.o",	
+			"compiletest/bin/GEDCOMparser.o",		
+			"compiletest/bin/TestHarness.o",
+			"compiletest/bin/GEDCOMTest.o",		
+			"compiletest/bin/GEDCOMtests",
+			"compiletest/bin/GEDCOMTestCreate.o",	
+			"compiletest/bin/GEDCOMutilities.o"
 		]
 	}
 }

@@ -25,8 +25,9 @@ Optional Flags
 -c indicates a CSV output file will be generated based on the results of the parsing.
 -o will indicate the output file name and location of the csv file, with a default of output.csv. The tool will not print output to the screen other than a starting notice or error notices when running with -c.
 -a anonymizes the user submission folder names
--r will run the test harness and give a score to the user. Should only be used for preliminary testing purposes and gathering a score for measure tracking, SHOULD NOT be in student version
--e will display any command line errors encountered when compiling
+-v will give verbose output to the user. This involves two different elements:
+    Will run the test harness and give a score to the user. Should only be used for preliminary testing purposes and gathering a score for measure tracking.
+    Will display any command line errors encountered when compiling.
 
 Notes:
 

@@ -37,8 +37,10 @@ def getExpectedStructure(idirectory, jsonString):
 	expectedFileNames = []
 	expectedFunctionDeclarations = []
 	expectedReadmeStructure = []
+	expectedOutputFiles = []
 	newExpectedFolderNames = []
 	newExpectedFileNames = []
+	
 	
 	#Test file of prewritten JSON to match files
 	with open(jsonString) as f:
@@ -56,6 +58,8 @@ def getExpectedStructure(idirectory, jsonString):
 	[x.encode('ascii') for x in expectedFileNames]
 	expectedReadmeStructure = data["compliance"]["readmeCategories"]
 	[x.encode('ascii') for x in expectedReadmeStructure]
+	expectedOutputFiles = data["compliance"]["outputFiles"]
+	[x.encode('ascii') for x in expectedOutputFiles]
 	
 	for files in expectedFileNames:
 		tempList = []
@@ -70,8 +74,30 @@ def getExpectedStructure(idirectory, jsonString):
 			expectedFunctionDeclarations.append(files.encode("ascii"))
 			expectedFunctionDeclarations.append(tempList)
 	#print expectedFunctionDeclarations
-	return newExpectedFileNames, newExpectedFolderNames, expectedFunctionDeclarations, expectedReadmeStructure
+	return newExpectedFileNames, newExpectedFolderNames, expectedFunctionDeclarations, expectedReadmeStructure, expectedOutputFiles
 
+def compareOutputFiles(expectedOutputFiles, actualOutputFiles, csv=False, csvList=[]):
+	found = False
+	missingCount = 0
+	#print expectedOutputFiles
+	#print actualOutputFiles
+	for expected in expectedOutputFiles:
+		for actual in actualOutputFiles:
+			if (expected in actual):
+				found = True
+		if (found == False):
+			if (csv == False):
+				print "ERROR: Missing output file:", expected
+			missingCount = missingCount +1
+		found = False
+	if (csv == False):
+		print "Missing a total of",missingCount,"expected output files"
+
+	if (csv==True):
+		csvList.append(missingCount)
+		return csvList
+	return []
+	
 #Scrape a directory for all folders, files and functions in the given directory
 #INPUT: File path to a directory to parse
 #OUTPUT: 3 lists containing the folders, files and function declarations in the directory
@@ -250,13 +276,17 @@ def complianceManager(idirectory, csv=False, csvList=[]):
 	expectedFileNames = []
 	expectedFunctionDeclarations = []
 	expectedReadmeCategories = []
+	expectedOutputFiles = []
 	
-	expectedFileNames, expectedFolderNames, expectedFunctionDeclarations, expectedMakefileCategories = getExpectedStructure(idirectory, "src/compliance.json")
+	expectedFileNames, expectedFolderNames, expectedFunctionDeclarations, expectedMakefileCategories, expectedOutputFiles = getExpectedStructure(idirectory, "src/compliance.json")
 
 	#actualFunctionNames = getCtagsInfo(idirectory)
 
 	actualFolderNames, actualFileNames, actualFunctionDeclarations = getActualStructure(idirectory)
-
+	
+	actualOutputFiles = glob.glob('./compiletest/bin/*')
+	#print expectedOutputFiles
+	#print actualOutputFiles
 
 	#print "EXPECTED FUNCTIONS"
 	#print expectedFunctionDeclarations
@@ -271,14 +301,15 @@ def complianceManager(idirectory, csv=False, csvList=[]):
 	#print actualFolderNames
 	#print expectedFileNames
 	#print actualFileNames
-	if (csv == False):
-		print "---------- Compliance for directory", idirectory,"----------"
 	
 	csvList = compareFolders(expectedFolderNames,actualFolderNames, csv, csvList)
 	csvList = compareFiles(expectedFileNames,actualFileNames, csv, csvList)
 	csvList = compareFunctions(expectedFunctionDeclarations,actualFunctionDeclarations, csv, csvList)
 	csvList = checkReadme(idirectory+"/assign1/README", expectedMakefileCategories, csv, csvList)
 	csvList = improperCount(idirectory, csv, csvList)
+	#print "ACTUAL OUTPUT FILES"
+	#print actualOutputFiles
+	csvList = compareOutputFiles(expectedOutputFiles, actualOutputFiles, csv, csvList)
 	#print expectedFunctionDeclarations
 	#print actualFunctionDeclarations
 	
