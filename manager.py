@@ -115,7 +115,7 @@ def main(argv):
 			'Missing-Expected-Files',
 			'Extra-Non-Specification-Files',
 			'Missing-Expected-Functions',
-			'Expected-Readme-Headings-Missing',
+			#'Expected-Readme-Headings-Missing',
 			'Total-number-of-improper/hardcoded-include-paths',
 			'Number-Of-Missing-Output-Files',
 			'Compilation-Success'])

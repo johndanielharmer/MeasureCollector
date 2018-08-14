@@ -278,7 +278,7 @@ def complianceManager(idirectory, csv=False, csvList=[]):
 	expectedReadmeCategories = []
 	expectedOutputFiles = []
 	
-	expectedFileNames, expectedFolderNames, expectedFunctionDeclarations, expectedMakefileCategories, expectedOutputFiles = getExpectedStructure(idirectory, "src/compliance.json")
+	expectedFileNames, expectedFolderNames, expectedFunctionDeclarations, expectedReadmeCategories, expectedOutputFiles = getExpectedStructure(idirectory, "src/compliance.json")
 
 	#actualFunctionNames = getCtagsInfo(idirectory)
 
@@ -305,7 +305,7 @@ def complianceManager(idirectory, csv=False, csvList=[]):
 	csvList = compareFolders(expectedFolderNames,actualFolderNames, csv, csvList)
 	csvList = compareFiles(expectedFileNames,actualFileNames, csv, csvList)
 	csvList = compareFunctions(expectedFunctionDeclarations,actualFunctionDeclarations, csv, csvList)
-	csvList = checkReadme(idirectory+"/assign1/README", expectedMakefileCategories, csv, csvList)
+	#csvList = checkReadme(idirectory+"/assign1/README", expectedReadmeCategories, csv, csvList)
 	csvList = improperCount(idirectory, csv, csvList)
 	#print "ACTUAL OUTPUT FILES"
 	#print actualOutputFiles

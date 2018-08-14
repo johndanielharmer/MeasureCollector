@@ -5,4 +5,6 @@ all: compiletest
 	chmod +x .cleanup.sh
 
 clean:
+	rm src/*.pyc
 	./.cleanup.sh
+	
