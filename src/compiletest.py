@@ -56,10 +56,15 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 		result = subprocess.Popen("./.checkharness.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 	#Trim garbage output
 	listResult = list(result)
-
+	
+	#Call the cleanup script
+	#Remove all student files and leftover files from the project
+	csvListCompliance = complianceManager(projectFiles, csv, [])
+	csvList = csvListCompliance+csvList
+	
 	#Look for warning that the script failed
 	#TO DO: Implement a better method in the future
-	if "Exiting" in listResult[0]:
+	if "ERROR: Compilation Error" in listResult[0]:
 		if (csv==True):
 			csvList.append("Failure")
 		else:
@@ -77,10 +82,6 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 			if (runharness == True):
 				print listResult[0]
 	
-	#Call the cleanup script
-	#Remove all student files and leftover files from the project
-	csvListCompliance = complianceManager(projectFiles, csv, [])
-	csvList = csvListCompliance+csvList
 	subprocess.call("./.cleanup.sh", stdout=subprocess.PIPE)
 	return csvList
 
