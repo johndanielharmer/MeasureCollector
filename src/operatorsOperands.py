@@ -100,7 +100,7 @@ def getOperators(projectFiles, csv=False, csvList=[]):
 	for files in copiedFiles:
 		#Look through each unique "word" one at a time
 		for word in files:
-			print word
+			#print word
 			#Set the start and end of the word string to search for operators
 			stringStart = 0
 			stringEnd = len(word)
@@ -120,9 +120,9 @@ def getOperators(projectFiles, csv=False, csvList=[]):
 						#foundBreak = True
 						stringStart = stringIndex+len(operator)
 						operatorsList[1][i] = operatorsList[1][i]+1
-						if (operator == "->"):
-							testCount=testCount+1
-							print "string start =",stringStart
+						#if (operator == "->"):
+							#testCount=testCount+1
+							#print "string start =",stringStart
 					else:
 						foundBreak = True
 					if (j==len(operatorsList[0])-1):
@@ -130,8 +130,8 @@ def getOperators(projectFiles, csv=False, csvList=[]):
 				i=i+1
 				foundBreak = False
 			i=0
-			if (testCount >= 1):
-				print "NUMBER OF arrows IN WORD", word, ":",testCount
+			#if (testCount >= 1):
+				#print "NUMBER OF arrows IN WORD", word, ":",testCount
 			testCount = 0
 
 	i=0
