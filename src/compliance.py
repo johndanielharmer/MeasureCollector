@@ -29,6 +29,46 @@ import subprocess
 from includecheck import improperCount
 from functionscount import getCtagsInfo
 
+def getReferenceFunctions():
+	return ["GEDCOMparser.c",["char* printError(GEDCOMerror err)",
+				"char* printEvent(void* toBePrinted)",
+				"char* printFamily(void* toBePrinted)",
+				"char* printField(void* toBePrinted)",
+				"char* printGEDCOM(const GEDCOMobject* obj)",
+				"char* printIndividual(void* toBePrinted)",
+				"GEDCOMerror createGEDCOM(char* fileName, GEDCOMobject** obj)",
+				"Individual* findPerson(const GEDCOMobject* familyRecord, bool(*compare)(const void* first,const void* second), const void* person)",
+				"int compareEvents(const void* first, const void* second)",
+				"int compareFamilies(const void* first, const void* second)",
+				"int compareFields(const void* first, const void* second)",
+				"int compareIndividuals(const void* first, const void* second)",
+				"List getDescendants(const GEDCOMobject* familyRecord, const Individual* person)",
+				"void deleteEvent(void* toBeDeleted)",
+				"void deleteFamily(void* toBeDeleted)",
+				"void deleteField(void* toBeDeleted)",
+				"void deleteGEDCOM(GEDCOMobject* obj)",
+				"void deleteIndividual(void* toBeDeleted)"]]
+
+def getRegexes():
+	return ["GEDCOMparser.c",["char *\* *printError *\( *GEDCOMerror *[A-za-z]* *\)",
+				"char *\* *printEvent *\( *void *\* *[A-za-z]* *\)",
+				"char *\* *printFamily *\( *void *\* *[A-za-z]* *\)",
+				"char *\* *printField *\( *void *\* *[A-za-z]* *\)",
+				"char *\* *printGEDCOM *\( *const *GEDCOMobject *\* *[A-za-z]* *\)",
+				"char *\* *printIndividual *\( *void *\* *[A-za-z]* *\)",
+				"GEDCOMerror *createGEDCOM *\( *char *\* *[A-za-z]* *, *GEDCOMobject *\*\* *[A-za-z]* *\)",
+				"Individual *\* *findPerson *\( *const *GEDCOMobject *\* *[A-za-z]* *, *bool *\( *\* *compare *\) *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-za-z]* *\) *, *const *void *\* *[A-za-z]* *\)",
+				"int *compareEvents *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-Za-z]* *\)",
+				"int *compareFamilies *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-Za-z]* *\)",
+				"int *compareFields *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-Za-z]* *\)",
+				"int *compareIndividuals *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-Za-z]* *\)",
+				"List *getDescendants *\( *const *GEDCOMobject *\* *[A-za-z]* *, *const *Individual *\* *[A-Za-z]* *\)",
+				"void *deleteEvent *\( *void *\* *[A-za-z]* *\)",
+				"void *deleteFamily *\( *void *\* *[A-za-z]* *\)",
+				"void *deleteField *\( *void *\* *[A-za-z]* *\)",
+				"void *deleteGEDCOM *\( *GEDCOMobject *\* *[A-za-z]* *\)",
+				"void *deleteIndividual *\( *void *\* *[A-za-z]* *\)"]]
+
 #Parse the JSON string for information and translate that into a list which can be interpreted by other functions
 #INPUT: The directory passed as a command line argument where student folders exist, the JSON file which was written for the assignment
 #OUTPUT: Four lists which contain all of the expected folder, files, functions and readme headings
@@ -61,19 +101,8 @@ def getExpectedStructure(idirectory, jsonString):
 	expectedOutputFiles = data["compliance"]["outputFiles"]
 	[x.encode('ascii') for x in expectedOutputFiles]
 	
-	for files in expectedFileNames:
-		tempList = []
-		try:
-			for functions in data["compliance"]["functionNames"][files]:
-				tempList.append(functions.encode("ascii"))
-		except:
-			#Do nothing
-			pass
-		
-		if (len(tempList) > 0):
-			expectedFunctionDeclarations.append(files.encode("ascii"))
-			expectedFunctionDeclarations.append(tempList)
-	#print expectedFunctionDeclarations
+	expectedFunctionDeclarations = getRegexes()
+	#print len(expectedFunctionDeclarations)
 	return newExpectedFileNames, newExpectedFolderNames, expectedFunctionDeclarations, expectedReadmeStructure, expectedOutputFiles
 
 def compareOutputFiles(expectedOutputFiles, actualOutputFiles, csv=False, csvList=[]):
@@ -235,32 +264,31 @@ def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]
 		return csvList
 	return []
 
-def compareFunctions(expectedFunctionNames, actualFunctionNames, csv=False, csvList=[]):
+def compareFunctions(expectedFunctionRegexes, actualFunctionNames, csv=False, csvList=[]):
 	tempList = []
 	i = 0
 	found = False
 	missingCount = 0
+	refList = getReferenceFunctions()
+	refFunctions=refList[1]
 	#print len(expectedFunctionNames)
-	for i in range(0, len(expectedFunctionNames), 2):
-		fileName = expectedFunctionNames[i]
+	for functions in expectedFunctionRegexes[1]:
 		#print i
 		for actual in actualFunctionNames:
-			if fileName in actual:
-				tempList.append(actual)
-		for listFunction in expectedFunctionNames[i+1]:
-			lowerCaseFunction = listFunction.lower()
-			for fileFunction in tempList:
-				if lowerCaseFunction in fileFunction.lower():
-					found = True
-			if found == False:
-				#print "Missing or improperly named Function:", fileFunction
-				missingCount = missingCount + 1	
+			if (re.search(functions, actual) != None):
+				found = True
+				break
+		if (found == False):
+			if (csv == False):
+				print "ERROR: Missing or improperly defined function:", refList[0],":", refList[1][i]
+			missingCount = missingCount+1
 		found = False
-		tempList = []	
+		i=i+1
 	if (csv == False):
 		print "Missing a total of",missingCount,"Functions"
 
 	if (csv==True):
+		#print missingCount
 		csvList.append(missingCount)
 		return csvList
 	return []
@@ -305,6 +333,8 @@ def complianceManager(idirectory, csv=False, csvList=[]):
 	csvList = compareFolders(expectedFolderNames,actualFolderNames, csv, csvList)
 	csvList = compareFiles(expectedFileNames,actualFileNames, csv, csvList)
 	csvList = compareFunctions(expectedFunctionDeclarations,actualFunctionDeclarations, csv, csvList)
+	
+	#print csvList
 	#csvList = checkReadme(idirectory+"/assign1/README", expectedReadmeCategories, csv, csvList)
 	csvList = improperCount(idirectory, csv, csvList)
 	#print "ACTUAL OUTPUT FILES"
