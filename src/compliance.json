@@ -2,18 +2,15 @@
     "compliance": 
      {
 		"folderNames": [
-			"assign1",
-			"assign1/bin",
-			"assign1/include",
-			"assign1/src"
+			"bin",
+			"include",
+			"src"
 		],
 		"fileNames": [
-			"assign1/src/GEDCOMparser.c",
-			"assign1/src/LinkedListAPI.c",
-			"assign1/include/GEDCOMparser.h",
-			"assign1/include/LinkedListAPI.h",
-			"assign1/Makefile",
-			"assign1/README"
+			"src/GEDCOMparser.c",
+			"src/LinkedListAPI.c",
+			"include/GEDCOMparser.h",
+			"include/LinkedListAPI.h"
 		],
 		"readmeCategories": [
 			"Student Identification",

@@ -86,16 +86,16 @@ def getExpectedStructure(idirectory, jsonString):
 	with open(jsonString) as f:
 		data = json.load(f)
 	expectedFolderNames = data["compliance"]["folderNames"]
-	for efn in expectedFolderNames:
-		newExpectedFolderNames.append(idirectory+"/"+efn)
-	newExpectedFolderNames = [str(x) for x in newExpectedFolderNames]
+	#for efn in expectedFolderNames:
+		#newExpectedFolderNames.append(idirectory+"/"+efn)
+	newExpectedFolderNames = [str(x) for x in expectedFolderNames]
 	#print "From JSON string:",newExpectedFolderNames
-	[x.encode('ascii') for x in expectedFolderNames]
+	[x.encode('ascii') for x in newExpectedFolderNames]
 	expectedFileNames = data["compliance"]["fileNames"]
-	for efn in expectedFileNames:
-		newExpectedFileNames.append(idirectory+"/"+efn)
-	newExpectedFileNames = [str(x) for x in newExpectedFileNames]
-	[x.encode('ascii') for x in expectedFileNames]
+	#for efn in expectedFileNames:
+		#newExpectedFileNames.append(idirectory+"/"+efn)
+	newExpectedFileNames = [str(x) for x in expectedFileNames]
+	[x.encode('ascii') for x in newExpectedFileNames]
 	expectedReadmeStructure = data["compliance"]["readmeCategories"]
 	[x.encode('ascii') for x in expectedReadmeStructure]
 	expectedOutputFiles = data["compliance"]["outputFiles"]
@@ -103,6 +103,8 @@ def getExpectedStructure(idirectory, jsonString):
 	
 	expectedFunctionDeclarations = getRegexes()
 	#print len(expectedFunctionDeclarations)
+	#print newExpectedFolderNames
+	#print newExpectedFileNames
 	return newExpectedFileNames, newExpectedFolderNames, expectedFunctionDeclarations, expectedReadmeStructure, expectedOutputFiles
 
 def compareOutputFiles(expectedOutputFiles, actualOutputFiles, csv=False, csvList=[]):
@@ -132,14 +134,16 @@ def compareOutputFiles(expectedOutputFiles, actualOutputFiles, csv=False, csvLis
 #OUTPUT: 3 lists containing the folders, files and function declarations in the directory
 def getActualStructure(path):
 	#print path
+	i=0
 	actualFolders = []
 	actualFiles = []
 	actualFunctions = []
 	for newPath, dirs, files in os.walk(path):
-		#print newPath
+		#print "DIRS =",dirs
 		if (newPath != path):
 			actualFolders.append(newPath)
 		for f in files:
+			#print "newpath =",newPath
 			if f != '':
 				actualFiles.append(newPath+"/"+f)
 	#print actualFiles
@@ -147,7 +151,9 @@ def getActualStructure(path):
 		for dirpath, dirnames, files in os.walk(path)
 		for f in files if (f.endswith('.c')) or (f.endswith('.h'))]
 	actualFunctions = getCtagsInfo(projectFiles)
-	return actualFolders, actualFiles, actualFunctions
+	#print "ACTUAL FOLDERS=",actualFolders[1:]
+	#print "ACTUAL FILES=",actualFolders[1:]
+	return actualFolders[1:], actualFiles, actualFunctions
 
 #Read a README file for specific headers as defined by the JSON compliance file
 #INPUT: The file address of the readme and a list of the expected categories for the readme. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point.
@@ -194,11 +200,12 @@ def compareFiles(expectedFileNames, actualFileNames, csv=False, csvList=[]):
 	missingCount = 0
 	for expected in expectedFileNames:
 		for actual in actualFileNames:
-			if (expected == actual):
+			searchLen = len(actual) - len(expected)
+			if (expected == actual[searchLen:] or "readme" in actual.lower() or "makefile" in actual.lower()):
 				found = True
 		if (found == False):
 			if (csv == False):
-				print "ERROR: Missing or improperly named file:", expected
+				print "ERROR: Missing or improperly named file. Expected:", expected
 			missingCount = missingCount +1
 		found = False
 	if (csv == False):
@@ -208,7 +215,8 @@ def compareFiles(expectedFileNames, actualFileNames, csv=False, csvList=[]):
 	extraCount = 0
 	for actual in actualFileNames:
 		for expected in expectedFileNames:
-			if (expected == actual):
+			searchLen = len(actual) - len(expected)
+			if (expected == actual[searchLen:] or ".DS_Store" in actual or "readme" in actual.lower() or "makefile" in actual.lower()):
 				found = True
 		if (found == False):
 			if (csv == False):
@@ -235,7 +243,8 @@ def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]
 	missingCount = 0
 	for expected in expectedFolderNames:
 		for actual in actualFolderNames:
-			if (expected == actual):
+			searchLen = len(actual) - len(expected)
+			if (expected == actual[searchLen:]):
 				found = True
 		if (found == False):
 			if (csv == False):
@@ -249,7 +258,8 @@ def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]
 	extraCount = 0
 	for actual in actualFolderNames:
 		for expected in expectedFolderNames:
-			if (expected == actual):
+			searchLen = len(actual) - len(expected)
+			if (expected == actual[searchLen:]):
 				found = True
 		if (found == False):
 			if (csv == False):
