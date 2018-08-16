@@ -15,7 +15,11 @@ Navigate to the MeasureCollector folder. Extract all student folders which are b
 
 Type "make" into the terminal to extract the test harness and ensure folders are all named correctly
 
-4. Execution
+4. Unzip all zipped folders
+
+Type "make extract" to unzip all zipped files. Tar files and others won't work just yet.
+
+5. Execution
 
 Once all the student code is extracted in this format, do the following:
 
