@@ -6,6 +6,10 @@ all: compiletest
 	chmod +x .subexecute.sh
 	chmod +x .checkharness.sh
 	chmod +x .cleanup.sh
+	chmod +x unzip.sh
+
+extract: unzip.sh
+	./unzip.sh
 
 clean:
 	rm src/*.pyc
