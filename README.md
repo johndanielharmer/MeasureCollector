@@ -23,7 +23,7 @@ Type "make extract" to unzip all zipped files. Tar files and others won't work j
 
 Once all the student code is extracted in this format, do the following:
 
-In the MeasureCollector folder, type 'python manager.py [-c] [-a] [-r] [-e] [-o <output/file/location.csv>] '.
+In the MeasureCollector folder, type 'python manager.py [-c] [-a] [-v] [-o <output/file/location.csv>] '.
 
 Optional Flags
 -c indicates a CSV output file will be generated based on the results of the parsing.
