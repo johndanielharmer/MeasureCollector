@@ -13,6 +13,18 @@ import shutil
 
 from compliance import complianceManager
 
+#def collapseExtraFolders(directory):
+	#folderVal = ""
+	#dirsCount = -1
+	#while (dirsCount < 2)
+	#for dirs in os.walk(directory).next()[1]:
+		#folderVal = dirs
+		#print len(folderVal)
+		#dirsCount = dirsCount + 1
+		#print dirsCount
+		#if (len(dir) >= 1):
+			#print "Not main directory"
+
 #Copies the contents of a student assignment folder (only .c and .h files are allowed) to the correct position in the destination folder.
 #INPUT: The file location of the root student assignment directory, the destination folder where the files will be copied to, an optional variable which allows for files to be excluded from the copy
 #OUTPUT: Files will be copied from source to destination
@@ -53,7 +65,7 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 	includeDirectory = "./"+projectFiles+"/include"
 	#print srcDirectory
 	#print includeDirectory
-	#collapseExtraFolders(projectFiles)
+	collapseExtraFolders(projectFiles)
 	#Copy all files to the correct location
 	errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
 	#print errCode

@@ -6,7 +6,6 @@ all: compiletest
 	chmod +x .subexecute.sh
 	chmod +x .checkharness.sh
 	chmod +x .cleanup.sh
-	chmod +x unzip.sh
 
 extract: unzip.py
 	python unzip.py
