@@ -21,6 +21,7 @@ def main(argv):
 	anon=True
 	runHarness=False
 	showErrors=False
+	broadcastFolder=False
 	csvFileAddress = "output.csv"
 	csvList = []
 	idirectory = 'studentfolders'
@@ -35,8 +36,8 @@ def main(argv):
 				}
 
 	# define command line arguments and check if the script call is valid
-	opts, args = getopt.getopt(argv,'t:d:j:i:co:avh',
-		['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','verbose','help'])
+	opts, args = getopt.getopt(argv,'t:d:j:i:co:avbh',
+		['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','verbose','broadcast','help'])
 	
 	#Set options and tool being selected
 	#Currentl only grabs includecheck.py but can be expanded in the future
@@ -64,6 +65,8 @@ def main(argv):
 			#print arg
 			showErrors = True
 			runHarness = True
+		elif opt in ('--broadcase', '-b'):
+			broadcastFolder = True
 
 
 	if idirectory != '':
@@ -124,9 +127,10 @@ def main(argv):
 			print "---------- BEGINNING CSV FILE WRITING ----------"
 
 			for folder in studentFolders:
-				print "PARSING", folder
-				print "Folder #",j
-				j=j+1
+				if broadcastFolder == True:
+					print "PARSING", folder
+					print "Folder #",j
+					j=j+1
 				i=i+1
 				csvListMeasure = []
 				csvListCompliance = []
