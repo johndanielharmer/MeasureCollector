@@ -78,10 +78,10 @@ def PathCollect(includes):
 			includeLineNum.append(entries)
 			i=0
 			
-	for lists in includePaths:
-		for entries in lists:
-			splitEntry = str.split(entries)
-			includeName = splitEntry[1]
+	#for lists in includePaths:
+		#for entries in lists:
+			#splitEntry = str.split(entries)
+			#includeName = splitEntry[1]
 	return fileNames, includePaths, includeLineNum	
 
 #Find each instance of an #include command and save what file and line it is located on
