@@ -32,9 +32,12 @@ def copyFiles(studentFolder, destination, excludeFiles=[]):
 		studentFiles.remove(files)
 		#print files
 		#copyfile(studentFiles, destination)
+	if len(studentFiles) == 0:
+		return -1
 	for copyFile in studentFiles:
 		#print copyFile, destination
 		shutil.copy(copyFile, destination)
+	return 1
 
 #Runs the compile, testing and cleanup script. Also checks output and either displays it or stores it for CSV purposes.
 #INPUT: Folder address of the folder to parse for the list of specific measures to calculate. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point
@@ -45,61 +48,69 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 	i=0
 	tempCSVList = []
 	resultsList = []
-	for dir in dirs:
-		i=i+1
-		#print [name for name in os.listdir(projectFiles) if os.path.isdir(name)]
-		srcDirectory = "./"+projectFiles+"/"+dir+"/src"
-		includeDirectory = "./"+projectFiles+"/"+dir+"/include"
-	
-		#Copy all files to the correct location
-		copyFiles(srcDirectory, "./compiletest/studentCode")
+	#print [name for name in os.listdir(projectFiles) if os.path.isdir(name)]
+	srcDirectory = "./"+projectFiles+"/src"
+	includeDirectory = "./"+projectFiles+"/include"
+	#print srcDirectory
+	#print includeDirectory
+	#collapseExtraFolders(projectFiles)
+	#Copy all files to the correct location
+	errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
+	#print errCode
+	if (errCode == -1):
+		for dir in dirs:
+			
+			srcDirectory = "./"+projectFiles+"/"+dir+"/src"
+			includeDirectory = "./"+projectFiles+"/"+dir+"/include"
+			#print srcDirectory
+			#print includeDirectory
+			errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
+			copyFiles(includeDirectory, "./compiletest/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+	else:
 		copyFiles(includeDirectory, "./compiletest/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
 
-		#Execute the .subexecute script
-		#Makes the test harness with the new student files, then runs the script
-		if (runharness == True):
-			result = subprocess.Popen("./.subexecute.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	#Execute the .subexecute script
+	#Makes the test harness with the new student files, then runs the script
+	if (runharness == True):
+		result = subprocess.Popen("./.subexecute.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 
+	else:
+		result = subprocess.Popen("./.checkharness.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+	#Trim garbage output
+	listResult = list(result)
+
+	#Call the cleanup script
+	#Remove all student files and leftover files from the project
+	csvListCompliance = complianceManager(projectFiles, csv, [])
+	tempCSVList.append(csvListCompliance+csvList)
+
+	#Look for warning that the script failed
+	#TO DO: Implement a better method in the future
+	if "ERROR: Compilation Error" in listResult[0]:
+		if (csv==True):
+			resultsList.append("Failure")
 		else:
-			result = subprocess.Popen("./.checkharness.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-		#Trim garbage output
-		listResult = list(result)
-	
-		#Call the cleanup script
-		#Remove all student files and leftover files from the project
-		csvListCompliance = complianceManager(projectFiles, csv, [])
-		tempCSVList.append(csvListCompliance+csvList)
-	
-		#Look for warning that the script failed
-		#TO DO: Implement a better method in the future
-		if "ERROR: Compilation Error" in listResult[0]:
-			if (csv==True):
-				resultsList.append("Failure")
-			else:
-				print "Compilation Success: False"
-				if (showErrors == True):
-					print listResult[1]
-					print listResult[0]
-			
-		else:
-			if (csv==True):
-				resultsList.append("Success")
-				#print "Compilation Success: True"
-			elif (csv==False):
-				print "Compilation Success: True"
-				if (runharness == True):
-					print listResult[0]
-	
-		subprocess.call("./.cleanup.sh", stdout=subprocess.PIPE)
-		i=i+1
-	i=0
+			print "Compilation Success: False"
+			if (showErrors == True):
+				print listResult[1]
+				print listResult[0]
+		
+	else:
+		if (csv==True):
+			resultsList.append("Success")
+			#print "Compilation Success: True"
+		elif (csv==False):
+			print "Compilation Success: True"
+			if (runharness == True):
+				print listResult[0]
+
+	subprocess.call("./.cleanup.sh", stdout=subprocess.PIPE)
 	for entry in resultsList:
 		if (entry == "Success"):
 			#print tempCSVList
-			csvList = csvList + tempCSVList[i]
+			csvList = csvList + tempCSVList[0]
 			csvList.append("Success")
 			return csvList
-		i=i+1
 	csvList = csvList + tempCSVList[0]
 	csvList.append("Failure")
 	return csvList

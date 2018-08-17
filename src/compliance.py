@@ -140,6 +140,8 @@ def getActualStructure(path):
 	actualFunctions = []
 	for newPath, dirs, files in os.walk(path):
 		#print "DIRS =",dirs
+		#print "NEWPATH=", newPath
+		#print "PATH=", path
 		if (newPath != path):
 			actualFolders.append(newPath)
 		for f in files:
@@ -153,7 +155,7 @@ def getActualStructure(path):
 	actualFunctions = getCtagsInfo(projectFiles)
 	#print "ACTUAL FOLDERS=",actualFolders[1:]
 	#print "ACTUAL FILES=",actualFolders[1:]
-	return actualFolders[1:], actualFiles, actualFunctions
+	return actualFolders, actualFiles, actualFunctions
 
 #Read a README file for specific headers as defined by the JSON compliance file
 #INPUT: The file address of the readme and a list of the expected categories for the readme. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point.
@@ -236,8 +238,8 @@ def compareFiles(expectedFileNames, actualFileNames, csv=False, csvList=[]):
 #INPUT: A list of expected folder names populated from the JSON string passed to this file, a list of actual folder names created by scraping the directory being parsed. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point
 #OUTPUT: Returns a blank list if CSV is set to false, or a populated list of number of missing folders and unexpected folders in the directory if csv=true
 def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]):
-	#print "Expected:", expectedFolderNames
-	#print "Actual:", actualFolderNames
+	#print "Expected Folders:", expectedFolderNames
+	#print "Actual Folders:", actualFolderNames
 	
 	found = False
 	missingCount = 0

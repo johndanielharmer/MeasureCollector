@@ -8,8 +8,8 @@ all: compiletest
 	chmod +x .cleanup.sh
 	chmod +x unzip.sh
 
-extract: unzip.sh
-	./unzip.sh
+extract: unzip.py
+	python unzip.py
 
 clean:
 	rm src/*.pyc

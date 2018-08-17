@@ -22,51 +22,51 @@ def main(argv):
 	showErrors=False
 	csvFileAddress = "output.csv"
 	csvList = []
-	idirectory = ''
+	idirectory = 'studentfolders'
 	#Make sure a file directory is provided
-	if (len(argv) <= 1):
-		print "Please provide a directory to search for C files."
-		sys.exit()
-	else:
+	#if (len(argv) <= 1):
+		#print "Please provide a directory to search for C files."
+		#sys.exit()
+	#else:
 		#Get command line arguments and put them into list
-		options = { 'tool':'', 'directory':'', 'jsonInput':'', 'ifsOff':'',
-					'csv':'', 'output':'', 'anon':'','runharness':'','showerrors':'','help':''
-					}
+	options = { 'tool':'', 'directory':'', 'jsonInput':'', 'ifsOff':'',
+				'csv':'', 'output':'', 'anon':'','runharness':'','showerrors':'','help':''
+				}
 
-		# define command line arguments and check if the script call is valid
-		opts, args = getopt.getopt(argv,'t:d:j:i:co:avh',
-			['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','verbose','help'])
-		
-		#Set options and tool being selected
-		#Currentl only grabs includecheck.py but can be expanded in the future
-		for opt, arg in opts:
-			if opt in ('--tool', '-t'):
-				options['tool'] = arg
-			elif opt in ('directory', '-d'):
-				idirectory = arg
-				if not (os.path.isdir(idirectory)):
-					sys.stderr.write( 'Error. Directory ' + idirectory + ' does not exist.\n' )
-					sys.exit()
-			elif opt in ('--jsonInput', '-j'):
-				options['jsonInput'] = arg
-			elif opt in ('--ifsOff', '-i'):
-				options['ifs'] = False
-			elif opt in ('--csv', '-c'):
-				options['csv'] = True
-			elif opt in ('--output', '-o'):
-				#print arg
-				csvFileAddress = arg
-			elif opt in ('--anon', '-a'):
-				#print arg
-				anon = False
-			elif opt in ('--verbose', '-v'):
-				#print arg
-				showErrors = True
-				runHarness = True
+	# define command line arguments and check if the script call is valid
+	opts, args = getopt.getopt(argv,'t:d:j:i:co:avh',
+		['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','verbose','help'])
+	
+	#Set options and tool being selected
+	#Currentl only grabs includecheck.py but can be expanded in the future
+	for opt, arg in opts:
+		if opt in ('--tool', '-t'):
+			options['tool'] = arg
+		elif opt in ('directory', '-d'):
+			idirectory = arg
+			if not (os.path.isdir(idirectory)):
+				sys.stderr.write( 'Error. Directory ' + idirectory + ' does not exist.\n' )
+				sys.exit()
+		elif opt in ('--jsonInput', '-j'):
+			options['jsonInput'] = arg
+		elif opt in ('--ifsOff', '-i'):
+			options['ifs'] = False
+		elif opt in ('--csv', '-c'):
+			options['csv'] = True
+		elif opt in ('--output', '-o'):
+			#print arg
+			csvFileAddress = arg
+		elif opt in ('--anon', '-a'):
+			#print arg
+			anon = False
+		elif opt in ('--verbose', '-v'):
+			#print arg
+			showErrors = True
+			runHarness = True
 
 
-		if idirectory != '':
-			options['dir'] = idirectory
+	if idirectory != '':
+		options['dir'] = idirectory
 	#print options['csv']
 	
 	studentFiles = glob.glob(idirectory+'/*')
