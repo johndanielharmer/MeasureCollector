@@ -65,7 +65,7 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 	includeDirectory = "./"+projectFiles+"/include"
 	#print srcDirectory
 	#print includeDirectory
-	collapseExtraFolders(projectFiles)
+	#collapseExtraFolders(projectFiles)
 	#Copy all files to the correct location
 	errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
 	#print errCode
