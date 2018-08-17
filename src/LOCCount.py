@@ -47,18 +47,36 @@ def CountLOC(dir, csv=False, csvList=[]):
 		print "Total LOC:", SLOCCountTotal + commentCountTotal - comboCountTotal
 		print "Total SLOC:", SLOCCountTotal
 		print "Total Comment Count:", commentCountTotal
-		print "Average LOC per Module:",  (SLOCCountTotal + commentCountTotal) / float(len(SLOCCountList))
-		print "Average SLOC per Module:",  SLOCCountTotal / float(len(SLOCCountList))
-		print "Average comment count per Module:",	commentCountTotal / float(len(commentCountList))
+		if (len(SLOCCountList) == 0):
+			print "Average LOC per Module: 0"
+		else:
+			print "Average LOC per Module:",  (SLOCCountTotal + commentCountTotal - comboCountTotal) / float(len(SLOCCountList))
+		if (len(SLOCCountList) == 0):
+					print "Average SLOC per Module: 0"
+		else:
+			print "Average SLOC per Module:",  SLOCCountTotal / float(len(SLOCCountList))
+		if (len(commentCountList) == 0):
+			print "Average comment count per Module: 0"
+		else:
+			print "Average comment count per Module:",	commentCountTotal / float(len(commentCountList))
 	
 	
 	if csv==True:
 		csvList.append(SLOCCountTotal + commentCountTotal - comboCountTotal)
 		csvList.append(SLOCCountTotal)
 		csvList.append(commentCountTotal)
-		csvList.append(round((SLOCCountTotal + commentCountTotal) / float(len(SLOCCountList)),2))
-		csvList.append(round(SLOCCountTotal / float(len(SLOCCountList)),2))
-		csvList.append(round(commentCountTotal / float(len(commentCountList)),2))
+		if (len(SLOCCountList) == 0):
+			csvList.append(0)
+		else:
+			csvList.append(round((SLOCCountTotal + commentCountTotal) / float(len(SLOCCountList)),2))
+		if (len(SLOCCountList) == 0):
+			csvList.append(0)
+		else:
+			csvList.append(round(SLOCCountTotal / float(len(SLOCCountList)),2))
+		if (len(commentCountList) == 0):
+			csvList.append(0)
+		else:
+			csvList.append(round(commentCountTotal / float(len(commentCountList)),2))
 		return SLOCCountTotal, csvList
 	return SLOCCountTotal, []
 

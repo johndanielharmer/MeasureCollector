@@ -14,9 +14,12 @@ zipfiles = []
 zipfiles = glob.glob("studentfolders/*.zip")
 
 for file in zipfiles:
-	zip_ref = zipfile.ZipFile(file, 'r')
-	zip_ref.extractall("studentfolders/user"+str(i))
-	zip_ref.close()
+	try:
+		zip_ref = zipfile.ZipFile(file, 'r')
+		zip_ref.extractall("studentfolders/user"+str(i))
+		zip_ref.close()
+	except:
+		print "File was not a zip file, moving on"
 	#print "studentfolders/user"+str(i)+"/_MACOSX"
 	if(os.path.isdir("studentfolders/user"+str(i)+"/__MACOSX")):
 		shutil.rmtree("studentfolders/user"+str(i)+"/__MACOSX")

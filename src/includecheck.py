@@ -41,16 +41,18 @@ def PathValidate(fileNames, includePaths, includeLineNum):
 		j=0
 		for entry in entries:
 			result = str.split(entry)
+			if len(result) > 1:
+				
 			
-			#Ensure the first and last characters of the include file have " indicating a custom include file
-			if (result[1][0] == '"') and (result[1][-1:] == '"'):
-				if "/" in result[1]:
-					cutFileNames = fileNames[i].split("/")
-					output = ""
-					#Only grab the actual file name relevant to the file. Don't grab "unzipped" or anything earlier in the file name
-					for folder in cutFileNames[4:]:
-						output += folder
-					improperPaths.append([output,includeLineNum[i][j]])
+				#Ensure the first and last characters of the include file have " indicating a custom include file
+				if (result[1][0] == '"') and (result[1][-1:] == '"'):
+					if "/" in result[1]:
+						cutFileNames = fileNames[i].split("/")
+						output = ""
+						#Only grab the actual file name relevant to the file. Don't grab "unzipped" or anything earlier in the file name
+						for folder in cutFileNames[4:]:
+							output += folder
+						improperPaths.append([output,includeLineNum[i][j]])
 
 			j=j+1
 		i=i+1

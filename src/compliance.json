@@ -32,8 +32,7 @@
 			"compiletest/bin/TestHarness.o",
 			"compiletest/bin/GEDCOMTest.o",		
 			"compiletest/bin/GEDCOMtests",
-			"compiletest/bin/GEDCOMTestCreate.o",	
-			"compiletest/bin/GEDCOMutilities.o"
+			"compiletest/bin/GEDCOMTestCreate.o"
 		]
 	}
 }

@@ -25,6 +25,13 @@ def measureManager(idirectory, csv=False, csvList=[]):
 	SLOCTotalCount, csvList = CountLOC(projectFiles, csv, csvList)
 	csvList = calcUnique(projectFiles, csv, csvList)
 	csvList = getKeywordCount(projectFiles, csv, csvList)
+	if len(projectFiles) == 0:
+		csvList.append(0)
+		csvList.append(0)
+		csvList.append(0)
+		csvList.append(0)
+		csvList.append(0)
+		return csvList
 	functionsCount, csvList = countFunctions(projectFiles, csv, csvList)
 	if (csv == False):
 		if (functionsCount != 0):

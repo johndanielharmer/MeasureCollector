@@ -17,6 +17,7 @@ from compiletest import compileManager
 
 def main(argv):
 	i=0
+	j=0
 	anon=True
 	runHarness=False
 	showErrors=False
@@ -123,6 +124,9 @@ def main(argv):
 			print "---------- BEGINNING CSV FILE WRITING ----------"
 
 			for folder in studentFolders:
+				print "PARSING", folder
+				print "Folder #",j
+				j=j+1
 				i=i+1
 				csvListMeasure = []
 				csvListCompliance = []
