@@ -10,20 +10,60 @@ import glob
 from cStringIO import StringIO
 import subprocess
 import shutil
+from distutils.dir_util import copy_tree
 
 from compliance import complianceManager
 
-#def collapseExtraFolders(directory):
-	#folderVal = ""
-	#dirsCount = -1
-	#while (dirsCount < 2)
-	#for dirs in os.walk(directory).next()[1]:
-		#folderVal = dirs
-		#print len(folderVal)
-		#dirsCount = dirsCount + 1
-		#print dirsCount
-		#if (len(dir) >= 1):
-			#print "Not main directory"
+#Searches for instances of extra folders being above the desired assignment folder and copies the files out into a new folder just below the root which can be used to compilation testing. If no such folder is found, nothing happens.
+#INPUT: A directory to search along its entire depth for the expected student folders.
+#OUTPUT: If such a case of extra folders above the expected folder exists, copy the found folder to a folder just below the user root called !TESTFOLDER. If no such buried folder is found, do nothing.
+def CopyBuriedFolders(directory):
+	folderVal = ""
+	dirsCount = -1
+	searchedDirectory = directory
+	rootDirectory = directory
+	i=0
+	maxFolderCount = 0
+	folderCount = 0
+	realPath = ""
+	listOfDirs = []
+	fromDirectory = ""
+	toDirectory = ""
+	folderDepth = 0
+	notPopulatedCheck = False
+
+	while ("src" not in listOfDirs and "include" not in listOfDirs):
+		#print "LIST OF DIRS:",listOfDirs
+		searchedDirectory = searchedDirectory + realPath
+		try:
+			#print searchedDirectory
+			root, dirs, files = os.walk(searchedDirectory).next()
+			#for dirs in os.walk(searchedDirectory).next()[1]:
+			listOfDirs = dirs
+			i=0
+			for dir in dirs:
+				folderVal = "/"+dirs[i]
+				tempRoot, tempDirs, tempFiles = os.walk(searchedDirectory+folderVal).next()
+				#print "LENTEMPDIRS:",len(tempDirs)
+				#print "ROOT:", tempRoot
+				folderCount = len(tempDirs)
+				if (folderCount >= maxFolderCount):
+					realPath = folderVal
+					maxFolderCount = folderCount
+				folderCount = 0
+				i=i+1
+				
+		except StopIteration:
+			print "Cannot find files to compile. User:", directory
+			notPopulatedCheck = True
+			break
+
+	if (searchedDirectory.count("/") > 2 and notPopulatedCheck == False):
+		print "Time to copy up"
+		fromDirectory = searchedDirectory
+		toDirectory = rootDirectory + "/!TESTFOLDER"
+
+		copy_tree(fromDirectory, toDirectory)
 
 #Copies the contents of a student assignment folder (only .c and .h files are allowed) to the correct position in the destination folder.
 #INPUT: The file location of the root student assignment directory, the destination folder where the files will be copied to, an optional variable which allows for files to be excluded from the copy
@@ -65,7 +105,7 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 	includeDirectory = "./"+projectFiles+"/include"
 	#print srcDirectory
 	#print includeDirectory
-	#collapseExtraFolders(projectFiles)
+	CopyBuriedFolders(projectFiles)
 	#Copy all files to the correct location
 	errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
 	#print errCode
