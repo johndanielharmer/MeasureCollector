@@ -17,7 +17,7 @@ from compliance import complianceManager
 #Searches for instances of extra folders being above the desired assignment folder and copies the files out into a new folder just below the root which can be used to compilation testing. If no such folder is found, nothing happens.
 #INPUT: A directory to search along its entire depth for the expected student folders.
 #OUTPUT: If such a case of extra folders above the expected folder exists, copy the found folder to a folder just below the user root called !TESTFOLDER. If no such buried folder is found, do nothing.
-def CopyBuriedFolders(directory):
+def FindBuriedFolders(directory):
 	folderVal = ""
 	dirsCount = -1
 	searchedDirectory = directory
@@ -57,13 +57,20 @@ def CopyBuriedFolders(directory):
 			print "Cannot find files to compile. User:", directory
 			notPopulatedCheck = True
 			break
+			
+			
+	return searchedDirectory
+	
+	#if (searchedDirectory.count("/") > 2 and notPopulatedCheck == False):
+		#print "Time to copy up"
+		#print searchedDirectory
+		#fromDirectory = searchedDirectory
+		#toDirectory = rootDirectory + "/!TESTFOLDER"
 
-	if (searchedDirectory.count("/") > 2 and notPopulatedCheck == False):
-		print "Time to copy up"
-		fromDirectory = searchedDirectory
-		toDirectory = rootDirectory + "/!TESTFOLDER"
-
-		copy_tree(fromDirectory, toDirectory)
+		#copy_tree(fromDirectory, toDirectory)
+		
+		#root, dirs, files = os.walk(directory).next()
+		#print dirs
 
 #Copies the contents of a student assignment folder (only .c and .h files are allowed) to the correct position in the destination folder.
 #INPUT: The file location of the root student assignment directory, the destination folder where the files will be copied to, an optional variable which allows for files to be excluded from the copy
@@ -96,6 +103,7 @@ def copyFiles(studentFolder, destination, excludeFiles=[]):
 #OUTPUT: Returns a blank list if CSV is set to false, or a populated list of measures in the directory if csv=true
 def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 	root, dirs, files = os.walk(projectFiles).next()
+	actualLocation = ""
 	#print dirs
 	i=0
 	tempCSVList = []
@@ -105,21 +113,27 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 	includeDirectory = "./"+projectFiles+"/include"
 	#print srcDirectory
 	#print includeDirectory
-	CopyBuriedFolders(projectFiles)
+	actualLocation = FindBuriedFolders(projectFiles)
 	#Copy all files to the correct location
-	errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
-	#print errCode
-	if (errCode == -1):
-		for dir in dirs:
-			
-			srcDirectory = "./"+projectFiles+"/"+dir+"/src"
-			includeDirectory = "./"+projectFiles+"/"+dir+"/include"
-			#print srcDirectory
-			#print includeDirectory
-			errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
-			copyFiles(includeDirectory, "./compiletest/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+	#errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
+	if (actualLocation != ""):
+		srcDirectory = actualLocation + "/src"
+		includeDirectory = actualLocation + "/include"
+		errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
 	else:
-		copyFiles(includeDirectory, "./compiletest/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+		errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
+	#print errCode
+		if (errCode == -1):
+			for dir in dirs:
+			
+				srcDirectory = "./"+projectFiles+"/"+dir+"/src"
+				includeDirectory = "./"+projectFiles+"/"+dir+"/include"
+				#print srcDirectory
+				#print includeDirectory
+				errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
+				copyFiles(includeDirectory, "./compiletest/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+		else:
+			copyFiles(includeDirectory, "./compiletest/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
 
 	#Execute the .subexecute script
 	#Makes the test harness with the new student files, then runs the script
