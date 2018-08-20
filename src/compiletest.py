@@ -119,7 +119,10 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 	if (actualLocation != ""):
 		srcDirectory = actualLocation + "/src"
 		includeDirectory = actualLocation + "/include"
-		errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
+		copyFiles(srcDirectory, "./compiletest/studentCode")
+		copyFiles(includeDirectory, "./compiletest/studentInclude")
+		print srcDirectory
+		print includeDirectory
 	else:
 		errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
 	#print errCode
