@@ -121,8 +121,8 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 		includeDirectory = actualLocation + "/include"
 		copyFiles(srcDirectory, "./compiletest/studentCode")
 		copyFiles(includeDirectory, "./compiletest/studentInclude")
-		print srcDirectory
-		print includeDirectory
+		#print srcDirectory
+		#print includeDirectory
 	else:
 		errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
 	#print errCode

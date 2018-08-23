@@ -17,7 +17,7 @@ from compiletest import compileManager
 
 def main(argv):
 	i=0
-	j=0
+	j=1
 	anon=True
 	runHarness=False
 	showErrors=False
