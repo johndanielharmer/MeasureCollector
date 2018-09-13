@@ -135,8 +135,9 @@ def main(argv):
 			print "---------- BEGINNING CSV FILE WRITING ----------"
 
 			for folder in studentFolders:
+				trash, folderNoRoot = folder.split("/")
 				if broadcastFolder == True:
-					print "PARSING", folder
+					print "PARSING", folderNoRoot
 					print "Folder #",j
 					j=j+1
 				i=i+1
@@ -148,7 +149,7 @@ def main(argv):
 				#csvListCompliance = complianceManager(folder, True, csvListCompliance)
 				csvListCompilation = compileManager(folder, runHarness, showErrors, True, csvListCompilation)
 				if (anon == True):
-					userName = "user"+str(i)
+					userName = folderNoRoot
 					csvList = [userName]+csvListMeasure + csvListCompliance + csvListCompilation
 				else:
 					csvList = [folder]+csvListMeasure + csvListCompliance + csvListCompilation
