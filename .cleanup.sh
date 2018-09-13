@@ -1,7 +1,12 @@
 #!/bin/sh
 
-rm ./compiletest/.depend/*.d 2> /dev/null
-rm ./compiletest/bin/*.o 2> /dev/null
-rm ./compiletest/bin/GEDCOMtests 2> /dev/null
-rm ./compiletest/studentCode/*.* 2> /dev/null
-rm ./compiletest/studentInclude/*.* 2> /dev/null
+rm ./compiletestA1/.depend/*.d 2> /dev/null
+rm ./compiletestA1/bin/*.o 2> /dev/null
+rm ./compiletestA1/bin/GEDCOMtests 2> /dev/null
+rm ./compiletestA1/studentCode/*.* 2> /dev/null
+rm ./compiletestA1/studentInclude/*.* 2> /dev/null
+rm ./compiletestA2/.depend/*.d 2> /dev/null
+rm ./compiletestA2/bin/*.o 2> /dev/null
+rm ./compiletestA2/bin/GEDCOMtests 2> /dev/null
+rm ./compiletestA2/studentCode/*.* 2> /dev/null
+rm ./compiletestA2/studentInclude/*.* 2> /dev/null

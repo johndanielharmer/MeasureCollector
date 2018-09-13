@@ -76,6 +76,7 @@ def FindBuriedFolders(directory):
 #INPUT: The file location of the root student assignment directory, the destination folder where the files will be copied to, an optional variable which allows for files to be excluded from the copy
 #OUTPUT: Files will be copied from source to destination
 def copyFiles(studentFolder, destination, excludeFiles=[]):
+	#print destination
 	excludedStudentFiles = []
 	foundFlag = False
 	# Get all .c and .h files in the folder
@@ -101,7 +102,7 @@ def copyFiles(studentFolder, destination, excludeFiles=[]):
 #Runs the compile, testing and cleanup script. Also checks output and either displays it or stores it for CSV purposes.
 #INPUT: Folder address of the folder to parse for the list of specific measures to calculate. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point
 #OUTPUT: Returns a blank list if CSV is set to false, or a populated list of measures in the directory if csv=true
-def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
+def compileManager(projectFiles, runharness, showErrors, assignment, csv=False, csvList=[]):
 	root, dirs, files = os.walk(projectFiles).next()
 	actualLocation = ""
 	#print dirs
@@ -119,12 +120,25 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 	if (actualLocation != ""):
 		srcDirectory = actualLocation + "/src"
 		includeDirectory = actualLocation + "/include"
-		copyFiles(srcDirectory, "./compiletest/studentCode")
-		copyFiles(includeDirectory, "./compiletest/studentInclude")
+		if (assignment == "A1"):
+			copyFiles(srcDirectory, "./compiletestA1/studentCode")
+			copyFiles(includeDirectory, "./compiletestA1/studentInclude")
+		elif (assignment == "A2"):
+			copyFiles(srcDirectory, "./compiletestA2/studentCode")
+			copyFiles(includeDirectory, "./compiletestA2/studentInclude")
+		else:
+			print "ERROR: ASSIGNMENT UNKNOWN"
+			exit()
 		#print srcDirectory
 		#print includeDirectory
 	else:
-		errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
+		if (assignment == "A1"):
+			errCode = copyFiles(srcDirectory, "./compiletestA1/studentCode")
+		elif (assignment == "A2"):
+			errCode = copyFiles(srcDirectory, "./compiletestA2/studentCode")
+		else:
+			print "ERROR: ASSIGNMENT UNKNOWN"
+			exit()
 	#print errCode
 		if (errCode == -1):
 			for dir in dirs:
@@ -133,10 +147,23 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 				includeDirectory = "./"+projectFiles+"/"+dir+"/include"
 				#print srcDirectory
 				#print includeDirectory
-				errCode = copyFiles(srcDirectory, "./compiletest/studentCode")
-				copyFiles(includeDirectory, "./compiletest/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+				if (assignment == "A1"):
+					errCode = copyFiles(srcDirectory, "./compiletestA1/studentCode")
+					copyFiles(includeDirectory, "./compiletestA1/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+				elif (assignment == "A2"):
+					errCode = copyFiles(srcDirectory, "./compiletestA2/studentCode")
+					copyFiles(includeDirectory, "./compiletestA2/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+				else:
+					print "ERROR: ASSIGNMENT UNKNOWN"
+					exit()
 		else:
-			copyFiles(includeDirectory, "./compiletest/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+			if (assignment == "A1"):
+				copyFiles(includeDirectory, "./compiletest/A1studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+			elif (assignment == "A2"):
+				copyFiles(includeDirectory, "./compiletestA2/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+			else:
+				print "ERROR: ASSIGNMENT UNKNOWN"
+				exit()
 
 	#Execute the .subexecute script
 	#Makes the test harness with the new student files, then runs the script
@@ -144,13 +171,19 @@ def compileManager(projectFiles, runharness, showErrors, csv=False, csvList=[]):
 		result = subprocess.Popen("./.subexecute.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 
 	else:
-		result = subprocess.Popen("./.checkharness.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+		if (assignment == "A1"):
+			result = subprocess.Popen("./.checkharnessA1.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+		elif (assignment == "A2"):
+			result = subprocess.Popen("./.checkharnessA2.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+		else:
+			print "ERROR: ASSIGNMENT UNKNOWN"
+			exit()
 	#Trim garbage output
 	listResult = list(result)
 
 	#Call the cleanup script
 	#Remove all student files and leftover files from the project
-	csvListCompliance = complianceManager(projectFiles, csv, [])
+	csvListCompliance = complianceManager(projectFiles, assignment, csv, [])
 	tempCSVList.append(csvListCompliance+csvList)
 
 	#Look for warning that the script failed

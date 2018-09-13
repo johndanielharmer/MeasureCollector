@@ -128,12 +128,13 @@ def getRegexesA2():
 				"GEDCOMerror *writeGEDCOM *\( *char *\* *[A-Za-z]* *, *const *GEDCOMobject *\* *[A-Za-z]*\)",
 				"ErrorCode *validateGEDCOM *\( *const *GEDCOMobject *\* *[A-Za-z]* *\)",
 				"List *getDescendantListN *\( *const *GEDCOMobject *\* *[A-Za-z]* *, *const *Individual *\* *[A-Za-z]* *, *unsigned *int *[A-Za-z]* *\)",
+				"List *getAncestorListN *\( *const *GEDCOMobject *\* *[A-Za-z]* *, *const *Individual *\* *[A-Za-z]* *, *int *[A-Za-z]* *\)",
 				"char *\* *indToJSON *\( *const *Individual *\* *[A-Za-z]* *\)",
 				"Individual *\* *JSONtoInd *\( *const *char *\* *[A-Za-z]* *\)",
 				"GEDCOMobject *\* *JSONtoGEDCOM *\( *const *char *\* *[A-Za-z]* *\)",
 				"void *addIndividual *\( *GEDCOMobject *\* *[A-Za-z]* *, *const *Individual *\* *[A-Za-z]* *\)",
 				"char *\* *iListToJSON *\( *List *[A-Za-z]* *\)",
-				"char *\* gListToJSON *\( *List *[A-Za-z]* *\)"
+				"char *\*gListToJSON *\( *List *[A-Za-z]* *\)"
 			],
 			"LinkedListAPI.c", [
 				"int *getLength *\( *List *[A-Za-z]* *\)",
@@ -145,7 +146,7 @@ def getRegexesA2():
 #Parse the JSON string for information and translate that into a list which can be interpreted by other functions
 #INPUT: The directory passed as a command line argument where student folders exist, the JSON file which was written for the assignment
 #OUTPUT: Four lists which contain all of the expected folder, files, functions and readme headings
-def getExpectedStructure(idirectory, jsonString):
+def getExpectedStructure(idirectory, jsonString, assignment):
 	expectedFolderNames = []
 	expectedFileNames = []
 	expectedFunctionDeclarations = []
@@ -173,8 +174,13 @@ def getExpectedStructure(idirectory, jsonString):
 	[x.encode('ascii') for x in expectedReadmeStructure]
 	expectedOutputFiles = data["compliance"]["outputFiles"]
 	[x.encode('ascii') for x in expectedOutputFiles]
-	
-	expectedFunctionDeclarations = getRegexes()
+	if (assignment == "A1"):
+		expectedFunctionDeclarations = getRegexes()
+	elif (assignment == "A2"):
+		expectedFunctionDeclarations = getRegexesA2()
+	else:
+		print "ERROR: ASSIGNMENT UNKNOWN"
+		exit()
 	#print len(expectedFunctionDeclarations)
 	#print newExpectedFolderNames
 	#print newExpectedFileNames
@@ -225,7 +231,8 @@ def getActualStructure(path):
 		for f in files:
 			#print "newpath =",newPath
 			if f != '':
-				actualFiles.append(newPath+"/"+f)
+				if "/.git" not in newPath:
+					actualFiles.append(newPath+"/"+f)
 	#print actualFiles
 	projectFiles = [os.path.join(dirpath, f)
 		for dirpath, dirnames, files in os.walk(path)
@@ -276,6 +283,7 @@ def checkReadme(readme, readmeCategories, csv=False, csvList=[]):
 #INPUT: A list of expected file names populated from the JSON string passed to this file, a list of actual file names created by scraping the directory being parsed. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point
 #OUTPUT: Returns a blank list if CSV is set to false, or a populated list of number of missing files and unexpected files in the directory if csv=true
 def compareFiles(expectedFileNames, actualFileNames, csv=False, csvList=[]):
+	
 	found = False
 	missingCount = 0
 	for expected in expectedFileNames:
@@ -285,7 +293,7 @@ def compareFiles(expectedFileNames, actualFileNames, csv=False, csvList=[]):
 			searchLen = len(actual) - len(expected)
 			#print "Expected =", expected
 			#print "Actual =", actual[searchLen:]
-			if (expected == actual[searchLen:] or "readme" in expected.lower() or "makefile" in expected.lower()):
+			if (expected.lower() == actual[searchLen:].lower() or "readme" in expected.lower() or "makefile" in expected.lower()):
 				found = True
 				#print "FOUND!!!!"
 		if (found == False):
@@ -301,7 +309,7 @@ def compareFiles(expectedFileNames, actualFileNames, csv=False, csvList=[]):
 	for actual in actualFileNames:
 		for expected in expectedFileNames:
 			searchLen = len(actual) - len(expected)
-			if (expected == actual[searchLen:] or ".DS_Store" in actual or "readme" in actual.lower() or "makefile" in actual.lower()):
+			if (expected.lower() == actual[searchLen:].lower() or ".DS_Store" in actual or "readme" in actual.lower() or "makefile" in actual.lower()):
 				found = True
 		if (found == False):
 			if (csv == False):
@@ -334,7 +342,7 @@ def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]
 	for expected in expectedFolderNames:
 		for actual in actualFolderNames:
 			searchLen = len(actual) - len(expected)
-			if (expected == actual[searchLen:]):
+			if (expected.lower() == actual[searchLen:].lower()):
 				found = True
 				totalFoundFolderCount = totalFoundFolderCount + 1
 		if (found == False):
@@ -351,7 +359,7 @@ def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]
 		#print actual
 		for expected in expectedFolderNames:
 			searchLen = len(actual) - len(expected)
-			if (expected == actual[searchLen:]):
+			if (expected.lower() == actual[searchLen:].lower()):
 				found = True
 		if (found == False):
 			if (csv == False):
@@ -378,12 +386,18 @@ def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]
 		return csvList
 	return []
 
-def compareFunctions(expectedFunctionRegexes, actualFunctionNames, csv=False, csvList=[]):
+def compareFunctions(expectedFunctionRegexes, actualFunctionNames, assignment, csv=False, csvList=[]):
 	tempList = []
 	i = 0
 	found = False
 	missingCount = 0
-	refList = getReferenceFunctions()
+	if (assignment == "A1"):
+		refList = getReferenceFunctions()
+	elif (assignment == "A2"):
+		refList = getReferenceFunctionsA2()
+	else:
+		print "ERROR: UNKNOWN ASSIGNMENT"
+		exit()
 	refFunctions=refList[1]
 	#print len(expectedFunctionNames)
 	for functions in expectedFunctionRegexes[1]:
@@ -410,7 +424,7 @@ def compareFunctions(expectedFunctionRegexes, actualFunctionNames, csv=False, cs
 #Input: A folder with student submission inside. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point
 #OUTPUT: Returns a blank list if CSV is set to false, or a populated list of number of measures calculated by this file if csv=true
 
-def complianceManager(idirectory, csv=False, csvList=[]):
+def complianceManager(idirectory, assignment, csv=False, csvList=[]):
 	#print "---------------------------------------------------------"
 	actualFolderNames = []
 	actualFileNames = []
@@ -421,13 +435,30 @@ def complianceManager(idirectory, csv=False, csvList=[]):
 	expectedReadmeCategories = []
 	expectedOutputFiles = []
 	
-	expectedFileNames, expectedFolderNames, expectedFunctionDeclarations, expectedReadmeCategories, expectedOutputFiles = getExpectedStructure(idirectory, "src/complianceA1.json")
+	if (assignment == "A1"):
+		complianceFilePath = "src/complianceA1.json"
+	elif (assignment == "A2"):
+		complianceFilePath = "src/complianceA2.json"
+	else:
+		print "ERROR: ASSIGNMENT UNKNOWN"
+		exit()
+	
+	expectedFileNames, expectedFolderNames, expectedFunctionDeclarations, expectedReadmeCategories, expectedOutputFiles = getExpectedStructure(idirectory, complianceFilePath, assignment)
 
 	#actualFunctionNames = getCtagsInfo(idirectory)
 
 	actualFolderNames, actualFileNames, actualFunctionDeclarations = getActualStructure(idirectory)
 	
-	actualOutputFiles = glob.glob('./compiletest/bin/*')
+	
+	if (assignment == "A1"):
+		actualOutputFiles = glob.glob('./compiletestA1/bin/*')
+		#print actualOutputFiles
+	elif (assignment == "A2"):
+		actualOutputFiles = glob.glob('./compiletestA2/bin/*')
+		#print actualOutputFiles
+	else:
+		print "UNEXPECTED ASSIGNMENT, ABORTING"
+		exit()
 	#print expectedOutputFiles
 	#print actualOutputFiles
 
@@ -447,7 +478,7 @@ def complianceManager(idirectory, csv=False, csvList=[]):
 	
 	csvList = compareFolders(expectedFolderNames,actualFolderNames, csv, csvList)
 	csvList = compareFiles(expectedFileNames,actualFileNames, csv, csvList)
-	csvList = compareFunctions(expectedFunctionDeclarations,actualFunctionDeclarations, csv, csvList)
+	csvList = compareFunctions(expectedFunctionDeclarations,actualFunctionDeclarations, assignment, csv, csvList)
 	
 	#print csvList
 	#csvList = checkReadme(idirectory+"/assign1/README", expectedReadmeCategories, csv, csvList)

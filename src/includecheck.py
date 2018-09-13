@@ -70,6 +70,7 @@ def PathCollect(includes):
 	#includePathOnlyFile = []
 	i=0
 	for entries in includes:
+		#print entries
 		if i==0:
 			fileNames.append(entries)
 			i=i+1
@@ -101,11 +102,10 @@ def PathFind(dir):
 		fp	= open(file, "r")
 		#Remove newlines and related characters
 		lines = [line.strip() for line in fp]
-		
 		includeKey = "#include"
 		includeList.append(file)
 		#Get all include commands  and save the to a list
-		includeList.append([s for s in lines if includeKey.lower() in s.lower()])
+		includeList.append([s for s in lines if includeKey.lower() in s.lower() and s[0] != '/' and s[0] != '*'])
 		i=1
 		#Find line number of line where #include commands are
 		for line in lines:

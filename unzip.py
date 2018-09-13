@@ -41,7 +41,7 @@ def unzip(path, i=0, k=0):
 				#i=i+1
 			#print "studentfolders/user"+str(i)+" belongs to", file
 		except zipfile.BadZipfile:
-			print "File was not a zip file, moving on"
+			print "File", file,"was not a zip file, moving on"
 			k=k+1
 		#print path+"/user"+str(i)+"/__MACOSX"
 

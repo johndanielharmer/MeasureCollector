@@ -18,14 +18,14 @@ from compiletest import compileManager
 def main(argv):
 	i=0
 	j=1
-	anon=True
+	anon=False
 	runHarness=False
 	showErrors=False
 	broadcastFolder=False
 	csvFileAddress = "output.csv"
 	csvList = []
 	idirectory = 'studentfolders'
-	chosenSubmission = "A1"
+	chosenSubmission = ""
 	#Make sure a file directory is provided
 	#if (len(argv) <= 1):
 		#print "Please provide a directory to search for C files."
@@ -33,12 +33,12 @@ def main(argv):
 	#else:
 		#Get command line arguments and put them into list
 	options = { 'tool':'', 'directory':'', 'jsonInput':'', 'ifsOff':'',
-				'csv':'', 'output':'', 'anon':'','runharness':'','showerrors':'','help':'', 'submission':''
+				'csv':'', 'output':'','runharness':'','showerrors':'','help':'', 'submission':''
 				}
 
 	# define command line arguments and check if the script call is valid
-	opts, args = getopt.getopt(argv,'t:d:j:i:co:avbhs:',
-		['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','verbose','broadcast','help', 'submission'])
+	opts, args = getopt.getopt(argv,'t:d:j:i:co:vbhs:',
+		['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','verbose','broadcast','help', 'submission'])
 	
 	#Set options and tool being selected
 	#Currentl only grabs includecheck.py but can be expanded in the future
@@ -59,9 +59,6 @@ def main(argv):
 		elif opt in ('--output', '-o'):
 			#print arg
 			csvFileAddress = arg
-		elif opt in ('--anon', '-a'):
-			#print arg
-			anon = False
 		elif opt in ('--verbose', '-v'):
 			#print arg
 			showErrors = True
@@ -74,13 +71,17 @@ def main(argv):
 				print "ERROR: Chosen assignment to parse is invalid. Please choose A1 or A2."
 				return -1
 			else:
-				chosenSubmission = opt
+				chosenSubmission = arg.upper()
 
 
 	if idirectory != '':
 		options['dir'] = idirectory
 	#print options['csv']
 	
+	if (chosenSubmission == ""):
+		print "ERROR: Please use the [-s <Assignment>] flag and  assignment to parse is invalid. Current options are A1 or A2."
+		return -1
+		
 	studentFiles = glob.glob(idirectory+'/*')
 	studentFolders = filter(lambda f: os.path.isdir(f), studentFiles)
 	#print studentFolders
@@ -90,8 +91,6 @@ def main(argv):
 		for folder in studentFolders:
 			i=i+1
 			username = folder
-			if (anon == True):
-				username = "User"+str(i)
 				
 			print "---------- Measures for user", username,"----------"
 			measureManager(folder)
@@ -145,14 +144,13 @@ def main(argv):
 				csvListCompliance = []
 				csvListCompilation = []
 				csvList = []
+				#print "---------------------------------------------------------------"
+				#print "User", folderNoRoot
 				csvListMeasure = measureManager(folder, True, csvListMeasure)
 				#csvListCompliance = complianceManager(folder, True, csvListCompliance)
-				csvListCompilation = compileManager(folder, runHarness, showErrors, True, csvListCompilation)
-				if (anon == True):
-					userName = folderNoRoot
-					csvList = [userName]+csvListMeasure + csvListCompliance + csvListCompilation
-				else:
-					csvList = [folder]+csvListMeasure + csvListCompliance + csvListCompilation
+				csvListCompilation = compileManager(folder, runHarness, showErrors, chosenSubmission, True, csvListCompilation)
+				userName = folderNoRoot
+				csvList = [userName]+csvListMeasure + csvListCompliance + csvListCompilation
 				#print ''
 				#print csvList
 				filewriter.writerow(csvList)
