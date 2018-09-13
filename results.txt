@@ -1,0 +1,451 @@
+---------- BEGINNING CSV FILE WRITING ----------
+PARSING studentfolders/user64
+Folder # 1
+PARSING studentfolders/user119
+Folder # 2
+PARSING studentfolders/user90
+Folder # 3
+PARSING studentfolders/user126
+Folder # 4
+PARSING studentfolders/user97
+Folder # 5
+PARSING studentfolders/user63
+Folder # 6
+PARSING studentfolders/user121
+Folder # 7
+PARSING studentfolders/user128
+Folder # 8
+PARSING studentfolders/user55
+Folder # 9
+PARSING studentfolders/user117
+Folder # 10
+PARSING studentfolders/user52
+Folder # 11
+PARSING studentfolders/user99
+Folder # 12
+PARSING studentfolders/user110
+Folder # 13
+PARSING studentfolders/user39
+Folder # 14
+PARSING studentfolders/user144
+Folder # 15
+PARSING studentfolders/user143
+Folder # 16
+PARSING studentfolders/user188
+Folder # 17
+PARSING studentfolders/user175
+Folder # 18
+PARSING studentfolders/user181
+Folder # 19
+PARSING studentfolders/user37
+Folder # 20
+PARSING studentfolders/user186
+Folder # 21
+PARSING studentfolders/user172
+Folder # 22
+PARSING studentfolders/user30
+Folder # 23
+PARSING studentfolders/user53
+Folder # 24
+PARSING studentfolders/user111
+Folder # 25
+PARSING studentfolders/user98
+Folder # 26
+PARSING studentfolders/user54
+Folder # 27
+PARSING studentfolders/user129
+Folder # 28
+PARSING studentfolders/user116
+Folder # 29
+PARSING studentfolders/user62
+Folder # 30
+PARSING studentfolders/user96
+Folder # 31
+ERROR: Missing or improperly named file. Expected: src/LinkedListAPI.c
+PARSING studentfolders/user120
+Folder # 32
+PARSING studentfolders/user91
+Folder # 33
+PARSING studentfolders/user118
+Folder # 34
+Cannot find files to compile. User: studentfolders/user118
+ERROR: Missing or improperly named file. Expected: src/GEDCOMparser.c
+ERROR: Missing or improperly named file. Expected: src/LinkedListAPI.c
+ERROR: Missing or improperly named file. Expected: include/GEDCOMparser.h
+ERROR: Missing or improperly named file. Expected: include/LinkedListAPI.h
+PARSING studentfolders/user65
+Folder # 35
+PARSING studentfolders/user127
+Folder # 36
+PARSING studentfolders/user173
+Folder # 37
+PARSING studentfolders/user187
+Folder # 38
+ERROR: Missing or improperly named file. Expected: src/LinkedListAPI.c
+PARSING studentfolders/user31
+Folder # 39
+PARSING studentfolders/user180
+Folder # 40
+PARSING studentfolders/user174
+Folder # 41
+PARSING studentfolders/user36
+Folder # 42
+PARSING studentfolders/user142
+Folder # 43
+PARSING studentfolders/user189
+Folder # 44
+PARSING studentfolders/user145
+Folder # 45
+PARSING studentfolders/user38
+Folder # 46
+PARSING studentfolders/user205
+Folder # 47
+PARSING studentfolders/user202
+Folder # 48
+ERROR: Missing or improperly named file. Expected: include/GEDCOMparser.h
+ERROR: Missing or improperly named file. Expected: include/LinkedListAPI.h
+PARSING studentfolders/user2
+Folder # 49
+PARSING studentfolders/user5
+Folder # 50
+PARSING studentfolders/user4
+Folder # 51
+PARSING studentfolders/user3
+Folder # 52
+PARSING studentfolders/user203
+Folder # 53
+ERROR: Missing or improperly named file. Expected: include/GEDCOMparser.h
+ERROR: Missing or improperly named file. Expected: include/LinkedListAPI.h
+PARSING studentfolders/user204
+Folder # 54
+PARSING studentfolders/user210
+Folder # 55
+PARSING studentfolders/user158
+Folder # 56
+PARSING studentfolders/user25
+Folder # 57
+PARSING studentfolders/user167
+Folder # 58
+PARSING studentfolders/user193
+Folder # 59
+PARSING studentfolders/user22
+Folder # 60
+PARSING studentfolders/user194
+Folder # 61
+PARSING studentfolders/user160
+Folder # 62
+PARSING studentfolders/user14
+Folder # 63
+PARSING studentfolders/user169
+Folder # 64
+PARSING studentfolders/user156
+Folder # 65
+PARSING studentfolders/user13
+Folder # 66
+PARSING studentfolders/user151
+Folder # 67
+PARSING studentfolders/user105
+Folder # 68
+PARSING studentfolders/user78
+Folder # 69
+PARSING studentfolders/user47
+Folder # 70
+PARSING studentfolders/user102
+Folder # 71
+PARSING studentfolders/user40
+Folder # 72
+PARSING studentfolders/user49
+Folder # 73
+PARSING studentfolders/user134
+Folder # 74
+PARSING studentfolders/user76
+Folder # 75
+PARSING studentfolders/user82
+Folder # 76
+PARSING studentfolders/user133
+Folder # 77
+PARSING studentfolders/user85
+Folder # 78
+PARSING studentfolders/user71
+Folder # 79
+PARSING studentfolders/user12
+Folder # 80
+PARSING studentfolders/user150
+Folder # 81
+PARSING studentfolders/user168
+Folder # 82
+PARSING studentfolders/user15
+Folder # 83
+PARSING studentfolders/user157
+Folder # 84
+PARSING studentfolders/user23
+Folder # 85
+PARSING studentfolders/user161
+Folder # 86
+PARSING studentfolders/user195
+Folder # 87
+PARSING studentfolders/user24
+Folder # 88
+PARSING studentfolders/user159
+Folder # 89
+PARSING studentfolders/user192
+Folder # 90
+PARSING studentfolders/user166
+Folder # 91
+PARSING studentfolders/user132
+Folder # 92
+PARSING studentfolders/user70
+Folder # 93
+PARSING studentfolders/user84
+Folder # 94
+PARSING studentfolders/user135
+Folder # 95
+ERROR: Missing or improperly named file. Expected: src/LinkedListAPI.c
+PARSING studentfolders/user48
+Folder # 96
+PARSING studentfolders/user83
+Folder # 97
+ERROR: Missing or improperly named file. Expected: include/GEDCOMparser.h
+ERROR: Missing or improperly named file. Expected: include/LinkedListAPI.h
+PARSING studentfolders/user77
+Folder # 98
+PARSING studentfolders/user103
+Folder # 99
+PARSING studentfolders/user41
+Folder # 100
+PARSING studentfolders/user79
+Folder # 101
+PARSING studentfolders/user104
+Folder # 102
+PARSING studentfolders/user46
+Folder # 103
+PARSING studentfolders/user140
+Folder # 104
+PARSING studentfolders/user147
+Folder # 105
+PARSING studentfolders/user178
+Folder # 106
+PARSING studentfolders/user185
+Folder # 107
+PARSING studentfolders/user171
+Folder # 108
+PARSING studentfolders/user33
+Folder # 109
+PARSING studentfolders/user176
+Folder # 110
+PARSING studentfolders/user182
+Folder # 111
+PARSING studentfolders/user149
+Folder # 112
+PARSING studentfolders/user34
+Folder # 113
+PARSING studentfolders/user94
+Folder # 114
+PARSING studentfolders/user60
+Folder # 115
+PARSING studentfolders/user122
+Folder # 116
+PARSING studentfolders/user67
+Folder # 117
+PARSING studentfolders/user93
+Folder # 118
+PARSING studentfolders/user58
+Folder # 119
+PARSING studentfolders/user125
+Folder # 120
+PARSING studentfolders/user51
+Folder # 121
+PARSING studentfolders/user113
+Folder # 122
+PARSING studentfolders/user56
+Folder # 123
+PARSING studentfolders/user114
+Folder # 124
+PARSING studentfolders/user69
+Folder # 125
+PARSING studentfolders/user183
+Folder # 126
+PARSING studentfolders/user177
+Folder # 127
+ERROR: Missing or improperly named file. Expected: src/GEDCOMparser.c
+ERROR: Missing or improperly named file. Expected: src/LinkedListAPI.c
+PARSING studentfolders/user35
+Folder # 128
+PARSING studentfolders/user148
+Folder # 129
+PARSING studentfolders/user170
+Folder # 130
+PARSING studentfolders/user184
+Folder # 131
+PARSING studentfolders/user32
+Folder # 132
+PARSING studentfolders/user146
+Folder # 133
+PARSING studentfolders/user179
+Folder # 134
+PARSING studentfolders/user141
+Folder # 135
+PARSING studentfolders/user57
+Folder # 136
+PARSING studentfolders/user68
+Folder # 137
+PARSING studentfolders/user115
+Folder # 138
+PARSING studentfolders/user50
+Folder # 139
+PARSING studentfolders/user112
+Folder # 140
+PARSING studentfolders/user92
+Folder # 141
+PARSING studentfolders/user66
+Folder # 142
+PARSING studentfolders/user124
+Folder # 143
+PARSING studentfolders/user59
+Folder # 144
+PARSING studentfolders/user61
+Folder # 145
+PARSING studentfolders/user95
+Folder # 146
+PARSING studentfolders/user123
+Folder # 147
+PARSING studentfolders/user8
+Folder # 148
+PARSING studentfolders/user201
+Folder # 149
+PARSING studentfolders/user206
+Folder # 150
+PARSING studentfolders/user6
+Folder # 151
+PARSING studentfolders/user208
+Folder # 152
+PARSING studentfolders/user1
+Folder # 153
+ERROR: Missing or improperly named file. Expected: src/GEDCOMparser.c
+PARSING studentfolders/user209
+Folder # 154
+PARSING studentfolders/user7
+Folder # 155
+PARSING studentfolders/user207
+Folder # 156
+PARSING studentfolders/user9
+Folder # 157
+PARSING studentfolders/user200
+Folder # 158
+PARSING studentfolders/user88
+Folder # 159
+PARSING studentfolders/user101
+Folder # 160
+PARSING studentfolders/user43
+Folder # 161
+PARSING studentfolders/user106
+Folder # 162
+PARSING studentfolders/user139
+Folder # 163
+PARSING studentfolders/user44
+Folder # 164
+PARSING studentfolders/user130
+Folder # 165
+PARSING studentfolders/user86
+Folder # 166
+PARSING studentfolders/user72
+Folder # 167
+PARSING studentfolders/user137
+Folder # 168
+PARSING studentfolders/user75
+Folder # 169
+PARSING studentfolders/user108
+Folder # 170
+PARSING studentfolders/user81
+Folder # 171
+PARSING studentfolders/user21
+Folder # 172
+PARSING studentfolders/user197
+Folder # 173
+PARSING studentfolders/user163
+Folder # 174
+PARSING studentfolders/user26
+Folder # 175
+PARSING studentfolders/user164
+Folder # 176
+PARSING studentfolders/user19
+Folder # 177
+PARSING studentfolders/user190
+Folder # 178
+PARSING studentfolders/user199
+Folder # 179
+PARSING studentfolders/user10
+Folder # 180
+PARSING studentfolders/user152
+Folder # 181
+PARSING studentfolders/user17
+Folder # 182
+PARSING studentfolders/user28
+Folder # 183
+PARSING studentfolders/user155
+Folder # 184
+PARSING studentfolders/user136
+Folder # 185
+PARSING studentfolders/user80
+Folder # 186
+ERROR: Missing or improperly named file. Expected: src/GEDCOMparser.c
+PARSING studentfolders/user109
+Folder # 187
+PARSING studentfolders/user74
+Folder # 188
+PARSING studentfolders/user131
+Folder # 189
+PARSING studentfolders/user73
+Folder # 190
+ERROR: Missing or improperly named file. Expected: src/GEDCOMparser.c
+PARSING studentfolders/user87
+Folder # 191
+PARSING studentfolders/user107
+Folder # 192
+ERROR: Missing or improperly named file. Expected: include/GEDCOMparser.h
+ERROR: Missing or improperly named file. Expected: include/LinkedListAPI.h
+PARSING studentfolders/user45
+Folder # 193
+ERROR: Missing or improperly named file. Expected: include/GEDCOMparser.h
+ERROR: Missing or improperly named file. Expected: include/LinkedListAPI.h
+PARSING studentfolders/user138
+Folder # 194
+PARSING studentfolders/user100
+Folder # 195
+PARSING studentfolders/user89
+Folder # 196
+PARSING studentfolders/user42
+Folder # 197
+PARSING studentfolders/user16
+Folder # 198
+PARSING studentfolders/user154
+Folder # 199
+Cannot find files to compile. User: studentfolders/user154
+ERROR: Missing or improperly named file. Expected: src/GEDCOMparser.c
+ERROR: Missing or improperly named file. Expected: src/LinkedListAPI.c
+ERROR: Missing or improperly named file. Expected: include/GEDCOMparser.h
+ERROR: Missing or improperly named file. Expected: include/LinkedListAPI.h
+PARSING studentfolders/user29
+Folder # 200
+PARSING studentfolders/user11
+Folder # 201
+ERROR: Missing or improperly named file. Expected: src/LinkedListAPI.c
+PARSING studentfolders/user198
+Folder # 202
+PARSING studentfolders/user153
+Folder # 203
+PARSING studentfolders/user27
+Folder # 204
+ERROR: Missing or improperly named file. Expected: src/LinkedListAPI.c
+PARSING studentfolders/user191
+Folder # 205
+PARSING studentfolders/user18
+Folder # 206
+PARSING studentfolders/user165
+Folder # 207
+PARSING studentfolders/user20
+Folder # 208
+PARSING studentfolders/user162
+Folder # 209
+PARSING studentfolders/user196
+Folder # 210

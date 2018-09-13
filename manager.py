@@ -25,6 +25,7 @@ def main(argv):
 	csvFileAddress = "output.csv"
 	csvList = []
 	idirectory = 'studentfolders'
+	chosenSubmission = "A1"
 	#Make sure a file directory is provided
 	#if (len(argv) <= 1):
 		#print "Please provide a directory to search for C files."
@@ -32,12 +33,12 @@ def main(argv):
 	#else:
 		#Get command line arguments and put them into list
 	options = { 'tool':'', 'directory':'', 'jsonInput':'', 'ifsOff':'',
-				'csv':'', 'output':'', 'anon':'','runharness':'','showerrors':'','help':''
+				'csv':'', 'output':'', 'anon':'','runharness':'','showerrors':'','help':'', 'submission':''
 				}
 
 	# define command line arguments and check if the script call is valid
-	opts, args = getopt.getopt(argv,'t:d:j:i:co:avbh',
-		['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','verbose','broadcast','help'])
+	opts, args = getopt.getopt(argv,'t:d:j:i:co:avbhs:',
+		['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','verbose','broadcast','help', 'submission'])
 	
 	#Set options and tool being selected
 	#Currentl only grabs includecheck.py but can be expanded in the future
@@ -65,8 +66,15 @@ def main(argv):
 			#print arg
 			showErrors = True
 			runHarness = True
-		elif opt in ('--broadcase', '-b'):
+		elif opt in ('--broadcast', '-b'):
 			broadcastFolder = True
+		elif opt in ('--submission', '-s'):
+			if (str(arg).upper() != "A1" and str(arg).upper() != "A2"):
+				#print str(opt).upper()
+				print "ERROR: Chosen assignment to parse is invalid. Please choose A1 or A2."
+				return -1
+			else:
+				chosenSubmission = opt
 
 
 	if idirectory != '':

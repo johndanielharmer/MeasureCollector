@@ -143,7 +143,12 @@ def getActualStructure(path):
 		#print "NEWPATH=", newPath
 		#print "PATH=", path
 		if (newPath != path):
-			actualFolders.append(newPath)
+			#print "path =",path
+			#print "newPath =",newPath
+			if "/.git" not in newPath:
+				actualFolders.append(newPath)
+			#else:
+				#print "NOT IN"
 		for f in files:
 			#print "newpath =",newPath
 			if f != '':
@@ -201,10 +206,15 @@ def compareFiles(expectedFileNames, actualFileNames, csv=False, csvList=[]):
 	found = False
 	missingCount = 0
 	for expected in expectedFileNames:
+		#print expected
 		for actual in actualFileNames:
+			#print actual
 			searchLen = len(actual) - len(expected)
-			if (expected == actual[searchLen:] or "readme" in actual.lower() or "makefile" in actual.lower()):
+			#print "Expected =", expected
+			#print "Actual =", actual[searchLen:]
+			if (expected == actual[searchLen:] or "readme" in expected.lower() or "makefile" in expected.lower()):
 				found = True
+				#print "FOUND!!!!"
 		if (found == False):
 			if (csv == False):
 				print "ERROR: Missing or improperly named file. Expected:", expected
@@ -212,7 +222,7 @@ def compareFiles(expectedFileNames, actualFileNames, csv=False, csvList=[]):
 		found = False
 	if (csv == False):
 		print "Missing a total of",missingCount,"Files"
-	
+	#print missingCount
 	found = False
 	extraCount = 0
 	for actual in actualFileNames:
@@ -238,9 +248,14 @@ def compareFiles(expectedFileNames, actualFileNames, csv=False, csvList=[]):
 #INPUT: A list of expected folder names populated from the JSON string passed to this file, a list of actual folder names created by scraping the directory being parsed. Optional variables: csv determines whether or not the output prints or gathers results for csv formatting, csvList is the list of all data for the current file up until this point
 #OUTPUT: Returns a blank list if CSV is set to false, or a populated list of number of missing folders and unexpected folders in the directory if csv=true
 def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]):
+	
+	
+	#NOTE: FIX THE OUTPUT TO TRACK ACCURATE EXTRA FOLDERS NAMED THE SAME AS THE EXPECTED FOLDERS
+	
 	#print "Expected Folders:", expectedFolderNames
 	#print "Actual Folders:", actualFolderNames
-	
+	maxFoundFolderCount = len(expectedFolderNames)
+	totalFoundFolderCount = 0
 	found = False
 	missingCount = 0
 	for expected in expectedFolderNames:
@@ -248,6 +263,7 @@ def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]
 			searchLen = len(actual) - len(expected)
 			if (expected == actual[searchLen:]):
 				found = True
+				totalFoundFolderCount = totalFoundFolderCount + 1
 		if (found == False):
 			if (csv == False):
 				print "ERROR: Missing or improperly named folder:", expected
@@ -259,6 +275,7 @@ def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]
 	found = False
 	extraCount = 0
 	for actual in actualFolderNames:
+		#print actual
 		for expected in expectedFolderNames:
 			searchLen = len(actual) - len(expected)
 			if (expected == actual[searchLen:]):
@@ -268,11 +285,23 @@ def compareFolders(expectedFolderNames, actualFolderNames, csv=False, csvList=[]
 				print "WARNING: Extra non-specification outlined folder:", actual
 			extraCount = extraCount +1
 		found = False
+	found = True
+	for actual in actualFolderNames:
+		for sub in actualFolderNames:
+			if actual not in sub:
+				found = False
+		if found == True:
+			extraCount = extraCount - 1
+		found = True
+	if totalFoundFolderCount > maxFoundFolderCount:
+		extraCount = extraCount + (totalFoundFolderCount - maxFoundFolderCount)
 	if (csv == False):
 		print "Directory contains a total of",extraCount,"non-specification outlined folders"
 	if (csv==True):
 		csvList.append(missingCount)
 		csvList.append(extraCount)
+		#print extraCount
+		#print totalFoundFolderCount
 		return csvList
 	return []
 
@@ -309,6 +338,7 @@ def compareFunctions(expectedFunctionRegexes, actualFunctionNames, csv=False, cs
 #OUTPUT: Returns a blank list if CSV is set to false, or a populated list of number of measures calculated by this file if csv=true
 
 def complianceManager(idirectory, csv=False, csvList=[]):
+	#print "---------------------------------------------------------"
 	actualFolderNames = []
 	actualFileNames = []
 	actualFunctionNames = []
@@ -318,7 +348,7 @@ def complianceManager(idirectory, csv=False, csvList=[]):
 	expectedReadmeCategories = []
 	expectedOutputFiles = []
 	
-	expectedFileNames, expectedFolderNames, expectedFunctionDeclarations, expectedReadmeCategories, expectedOutputFiles = getExpectedStructure(idirectory, "src/compliance.json")
+	expectedFileNames, expectedFolderNames, expectedFunctionDeclarations, expectedReadmeCategories, expectedOutputFiles = getExpectedStructure(idirectory, "src/complianceA1.json")
 
 	#actualFunctionNames = getCtagsInfo(idirectory)
 
