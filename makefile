@@ -6,7 +6,7 @@ all: compiletestA1 compiletestA2
 	mkdir -p ./compiletestA2/studentCode
 	mkdir -p ./compiletestA2/studentInclude
 	mkdir -p ./compiletestA1/.depend
-	mkdir -p .compiletestA2/.depend
+	mkdir -p ./compiletestA2/.depend
 	chmod +x .subexecute.sh
 	chmod +x .checkharnessA1.sh
 	chmod +x .checkharnessA2.sh
