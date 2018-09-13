@@ -35,6 +35,8 @@ Optional Flags
 
 Notes:
 
+For the current version of the software, you need to delete ALL the contents inside "studentfolders" to switch between A1 and A2 submissions. The software currently cannot handle having both A1 and A2 content in the folder at once and only A1 content should be present when running an A1 test, as well as only having A2 content for an A2 test.
+
 Type 'make clean' in the directory to destroy the compiletest folder. The studentfolders folder wil not be emptied.
 
 Some compliance measures (Files in the correct place/files have correct names, folders in the correct place/folders have correct names) are merged into single checks rather than two unique checks. The system cannot yet determine if the file is named correctly but put into the wrong spot. If the folder is named wrong, all the files inside it will be deemed incorrectly named as well. This can be addressed in the future if necessary.
