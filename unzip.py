@@ -57,7 +57,7 @@ def untar(path,i=0,k=0):
 		try:
 			if tarfile.is_tarfile(file):
 				tar_ref = tarfile.open(file, 'r')
-				print file
+				#print file
 				tar_ref.extractall(path+"/user"+str(i))
 				tar_ref.close()
 				if (os.path.isdir(path+"/user"+str(i)) == False):
