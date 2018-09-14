@@ -66,9 +66,9 @@ def main(argv):
 		elif opt in ('--broadcast', '-b'):
 			broadcastFolder = True
 		elif opt in ('--submission', '-s'):
-			if (str(arg).upper() != "A1" and str(arg).upper() != "A2"):
+			if (str(arg).upper() != "A1" and str(arg).upper() != "A2" and str(arg).upper() != "A1R" and str(arg).upper() != "A2R"):
 				#print str(opt).upper()
-				print "ERROR: Chosen assignment to parse is invalid. Please choose A1 or A2."
+				print "ERROR: Chosen assignment to parse is invalid. Please choose A1, A2, A1R or A2R."
 				return -1
 			else:
 				chosenSubmission = arg.upper()
@@ -79,7 +79,7 @@ def main(argv):
 	#print options['csv']
 	
 	if (chosenSubmission == ""):
-		print "ERROR: Please use the [-s <Assignment>] flag and  assignment to parse is invalid. Current options are A1 or A2."
+		print "ERROR: Please use the [-s <Assignment>] flag and  assignment to parse is invalid. Current options are A1, A2, A1R or A2R."
 		return -1
 		
 	studentFiles = glob.glob(idirectory+'/*')

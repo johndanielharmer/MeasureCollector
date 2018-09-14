@@ -24,6 +24,7 @@ def unzip(path, i=0, k=0):
 			#22 bytes means an empty zip folder and guarding against this prevents
 			#errors not caught by zipfile exceptions
 			zip_ref = zipfile.ZipFile(file, 'r')
+			#print file
 			zip_ref.extractall(path+"/user"+str(i))
 			zip_ref.close()
 			if (os.path.isdir(path+"/user"+str(i)) == False):
@@ -56,6 +57,7 @@ def untar(path,i=0,k=0):
 		try:
 			if tarfile.is_tarfile(file):
 				tar_ref = tarfile.open(file, 'r')
+				print file
 				tar_ref.extractall(path+"/user"+str(i))
 				tar_ref.close()
 				if (os.path.isdir(path+"/user"+str(i)) == False):

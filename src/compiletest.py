@@ -37,7 +37,11 @@ def FindBuriedFolders(directory):
 		searchedDirectory = searchedDirectory + realPath
 		try:
 			#print searchedDirectory
+			#print "BEFORE"
 			root, dirs, files = os.walk(searchedDirectory).next()
+			if (len(dirs) == 0):
+				return searchedDirectory
+			#print "AFTER"
 			#for dirs in os.walk(searchedDirectory).next()[1]:
 			listOfDirs = dirs
 			i=0
@@ -126,6 +130,12 @@ def compileManager(projectFiles, runharness, showErrors, assignment, csv=False, 
 		elif (assignment == "A2"):
 			copyFiles(srcDirectory, "./compiletestA2/studentCode")
 			copyFiles(includeDirectory, "./compiletestA2/studentInclude")
+		elif (assignment == "A1R"):
+			copyFiles(srcDirectory, "./compiletestA1R/studentCode")
+			copyFiles(includeDirectory, "./compiletestA1R/studentInclude")
+		elif (assignment == "A2R"):
+			copyFiles(srcDirectory, "./compiletestA2R/studentCode")
+			copyFiles(includeDirectory, "./compiletestA2R/studentInclude")
 		else:
 			print "ERROR: ASSIGNMENT UNKNOWN"
 			exit()
@@ -136,6 +146,10 @@ def compileManager(projectFiles, runharness, showErrors, assignment, csv=False, 
 			errCode = copyFiles(srcDirectory, "./compiletestA1/studentCode")
 		elif (assignment == "A2"):
 			errCode = copyFiles(srcDirectory, "./compiletestA2/studentCode")
+		elif (assignment == "A1R"):
+			errCode = copyFiles(srcDirectory, "./compiletestA1R/studentCode")
+		elif (assignment == "A2R"):
+			errCode = copyFiles(srcDirectory, "./compiletestA2R/studentCode")
 		else:
 			print "ERROR: ASSIGNMENT UNKNOWN"
 			exit()
@@ -153,14 +167,24 @@ def compileManager(projectFiles, runharness, showErrors, assignment, csv=False, 
 				elif (assignment == "A2"):
 					errCode = copyFiles(srcDirectory, "./compiletestA2/studentCode")
 					copyFiles(includeDirectory, "./compiletestA2/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+				elif (assignment == "A1R"):
+					errCode = copyFiles(srcDirectory, "./compiletestA1R/studentCode")
+					copyFiles(includeDirectory, "./compiletestA1R/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+				elif (assignment == "A2R"):
+					errCode = copyFiles(srcDirectory, "./compiletestA2R/studentCode")
+					copyFiles(includeDirectory, "./compiletestA2R/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
 				else:
 					print "ERROR: ASSIGNMENT UNKNOWN"
 					exit()
 		else:
 			if (assignment == "A1"):
-				copyFiles(includeDirectory, "./compiletest/A1studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+				copyFiles(includeDirectory, "./compiletestA1/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
 			elif (assignment == "A2"):
 				copyFiles(includeDirectory, "./compiletestA2/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+			elif (assignment == "A1R"):
+				copyFiles(includeDirectory, "./compiletestA1R/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
+			elif (assignment == "A2R"):
+				copyFiles(includeDirectory, "./compiletestA2R/studentInclude", ["GEDCOMparser.h", "LinkedListAPI.h"])
 			else:
 				print "ERROR: ASSIGNMENT UNKNOWN"
 				exit()
@@ -175,6 +199,10 @@ def compileManager(projectFiles, runharness, showErrors, assignment, csv=False, 
 			result = subprocess.Popen("./.checkharnessA1.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 		elif (assignment == "A2"):
 			result = subprocess.Popen("./.checkharnessA2.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+		elif (assignment == "A1R"):
+			result = subprocess.Popen("./.checkharnessA1R.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+		elif (assignment == "A2R"):
+			result = subprocess.Popen("./.checkharnessA2R.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 		else:
 			print "ERROR: ASSIGNMENT UNKNOWN"
 			exit()

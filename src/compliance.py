@@ -174,9 +174,9 @@ def getExpectedStructure(idirectory, jsonString, assignment):
 	[x.encode('ascii') for x in expectedReadmeStructure]
 	expectedOutputFiles = data["compliance"]["outputFiles"]
 	[x.encode('ascii') for x in expectedOutputFiles]
-	if (assignment == "A1"):
+	if (assignment == "A1" or assignment == "A1R"):
 		expectedFunctionDeclarations = getRegexes()
-	elif (assignment == "A2"):
+	elif (assignment == "A2" or assignment == "A2R"):
 		expectedFunctionDeclarations = getRegexesA2()
 	else:
 		print "ERROR: ASSIGNMENT UNKNOWN"
@@ -193,7 +193,7 @@ def compareOutputFiles(expectedOutputFiles, actualOutputFiles, csv=False, csvLis
 	#print actualOutputFiles
 	for expected in expectedOutputFiles:
 		for actual in actualOutputFiles:
-			if (expected in actual):
+			if (expected.lower() in actual.lower()):
 				found = True
 		if (found == False):
 			if (csv == False):
@@ -224,14 +224,14 @@ def getActualStructure(path):
 		if (newPath != path):
 			#print "path =",path
 			#print "newPath =",newPath
-			if "/.git" not in newPath:
+			if "/." not in newPath:
 				actualFolders.append(newPath)
 			#else:
 				#print "NOT IN"
 		for f in files:
 			#print "newpath =",newPath
 			if f != '':
-				if "/.git" not in newPath:
+				if "/." not in newPath:
 					actualFiles.append(newPath+"/"+f)
 	#print actualFiles
 	projectFiles = [os.path.join(dirpath, f)
@@ -391,9 +391,9 @@ def compareFunctions(expectedFunctionRegexes, actualFunctionNames, assignment, c
 	i = 0
 	found = False
 	missingCount = 0
-	if (assignment == "A1"):
+	if (assignment == "A1" or assignment == "A1R"):
 		refList = getReferenceFunctions()
-	elif (assignment == "A2"):
+	elif (assignment == "A2" or assignment == "A2R"):
 		refList = getReferenceFunctionsA2()
 	else:
 		print "ERROR: UNKNOWN ASSIGNMENT"
@@ -435,9 +435,9 @@ def complianceManager(idirectory, assignment, csv=False, csvList=[]):
 	expectedReadmeCategories = []
 	expectedOutputFiles = []
 	
-	if (assignment == "A1"):
+	if (assignment == "A1" or assignment == "A1R"):
 		complianceFilePath = "src/complianceA1.json"
-	elif (assignment == "A2"):
+	elif (assignment == "A2" or assignment == "A2R"):
 		complianceFilePath = "src/complianceA2.json"
 	else:
 		print "ERROR: ASSIGNMENT UNKNOWN"
@@ -455,7 +455,14 @@ def complianceManager(idirectory, assignment, csv=False, csvList=[]):
 		#print actualOutputFiles
 	elif (assignment == "A2"):
 		actualOutputFiles = glob.glob('./compiletestA2/bin/*')
+	
+	elif (assignment == "A1R"):
+		actualOutputFiles = glob.glob('./compiletestA1R/bin/*')
 		#print actualOutputFiles
+		#print actualOutputFiles
+	elif (assignment == "A2R"):
+		actualOutputFiles = glob.glob('./compiletestA2R/bin/*')
+	
 	else:
 		print "UNEXPECTED ASSIGNMENT, ABORTING"
 		exit()

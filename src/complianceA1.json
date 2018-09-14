@@ -18,21 +18,21 @@
 			"List of References"
 		],
 		"outputFiles": [
-			"compiletestA1/bin/GEDCOMFindPerson.o",	
-			"compiletestA1/bin/GEDCOMTestDelete.o",	
-			"compiletestA1/bin/LinkedListAPI.o",
-			"compiletestA1/bin/GEDCOMGetDescendants.o",	
-			"compiletestA1/bin/GEDCOMTestPrint.o",	
-			"compiletestA1/bin/ListTestCases.o",
-			"compiletestA1/bin/GEDCOMInvalidFiles.o",	
-			"compiletestA1/bin/GEDCOMTestUtilities.o",	
-			"compiletestA1/bin/TestFunctions.o",
-			"compiletestA1/bin/GEDCOMPrintError.o",	
-			"compiletestA1/bin/GEDCOMparser.o",		
-			"compiletestA1/bin/TestHarness.o",
-			"compiletestA1/bin/GEDCOMTest.o",		
-			"compiletestA1/bin/GEDCOMtests",
-			"compiletestA1/bin/GEDCOMTestCreate.o"
+			"GEDCOMFindPerson.o",	
+			"GEDCOMTestDelete.o",	
+			"LinkedListAPI.o",
+			"GEDCOMGetDescendants.o",	
+			"GEDCOMTestPrint.o",	
+			"ListTestCases.o",
+			"GEDCOMInvalidFiles.o",	
+			"GEDCOMTestUtilities.o",	
+			"TestFunctions.o",
+			"GEDCOMPrintError.o",	
+			"GEDCOMparser.o",		
+			"TestHarness.o",
+			"GEDCOMTest.o",		
+			"GEDCOMtests",
+			"GEDCOMTestCreate.o"
 		]
 	}
 }
