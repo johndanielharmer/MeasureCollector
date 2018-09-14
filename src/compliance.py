@@ -224,14 +224,14 @@ def getActualStructure(path):
 		if (newPath != path):
 			#print "path =",path
 			#print "newPath =",newPath
-			if "/.git" not in newPath:
+			if "/." not in newPath:
 				actualFolders.append(newPath)
 			#else:
 				#print "NOT IN"
 		for f in files:
 			#print "newpath =",newPath
 			if f != '':
-				if "/.git" not in newPath:
+				if "/." not in newPath:
 					actualFiles.append(newPath+"/"+f)
 	#print actualFiles
 	projectFiles = [os.path.join(dirpath, f)

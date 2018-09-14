@@ -39,8 +39,8 @@ def FindBuriedFolders(directory):
 			#print searchedDirectory
 			#print "BEFORE"
 			root, dirs, files = os.walk(searchedDirectory).next()
-			#if (len(dirs) == 0):
-				#return searchedDirectory
+			if (len(dirs) == 0):
+				return searchedDirectory
 			#print "AFTER"
 			#for dirs in os.walk(searchedDirectory).next()[1]:
 			listOfDirs = dirs
