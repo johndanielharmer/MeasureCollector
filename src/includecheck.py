@@ -41,16 +41,18 @@ def PathValidate(fileNames, includePaths, includeLineNum):
 		j=0
 		for entry in entries:
 			result = str.split(entry)
+			if len(result) > 1:
+				
 			
-			#Ensure the first and last characters of the include file have " indicating a custom include file
-			if (result[1][0] == '"') and (result[1][-1:] == '"'):
-				if "/" in result[1]:
-					cutFileNames = fileNames[i].split("/")
-					output = ""
-					#Only grab the actual file name relevant to the file. Don't grab "unzipped" or anything earlier in the file name
-					for folder in cutFileNames[4:]:
-						output += folder
-					improperPaths.append([output,includeLineNum[i][j]])
+				#Ensure the first and last characters of the include file have " indicating a custom include file
+				if (result[1][0] == '"') and (result[1][-1:] == '"'):
+					if "/" in result[1]:
+						cutFileNames = fileNames[i].split("/")
+						output = ""
+						#Only grab the actual file name relevant to the file. Don't grab "unzipped" or anything earlier in the file name
+						for folder in cutFileNames[4:]:
+							output += folder
+						improperPaths.append([output,includeLineNum[i][j]])
 
 			j=j+1
 		i=i+1
@@ -68,6 +70,7 @@ def PathCollect(includes):
 	#includePathOnlyFile = []
 	i=0
 	for entries in includes:
+		#print entries
 		if i==0:
 			fileNames.append(entries)
 			i=i+1
@@ -78,10 +81,10 @@ def PathCollect(includes):
 			includeLineNum.append(entries)
 			i=0
 			
-	for lists in includePaths:
-		for entries in lists:
-			splitEntry = str.split(entries)
-			includeName = splitEntry[1]
+	#for lists in includePaths:
+		#for entries in lists:
+			#splitEntry = str.split(entries)
+			#includeName = splitEntry[1]
 	return fileNames, includePaths, includeLineNum	
 
 #Find each instance of an #include command and save what file and line it is located on
@@ -99,11 +102,10 @@ def PathFind(dir):
 		fp	= open(file, "r")
 		#Remove newlines and related characters
 		lines = [line.strip() for line in fp]
-		
 		includeKey = "#include"
 		includeList.append(file)
 		#Get all include commands  and save the to a list
-		includeList.append([s for s in lines if includeKey.lower() in s.lower()])
+		includeList.append([s for s in lines if includeKey.lower() in s.lower() and s[0] != '/' and s[0] != '*'])
 		i=1
 		#Find line number of line where #include commands are
 		for line in lines:

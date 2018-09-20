@@ -6,13 +6,14 @@ from glob import glob
 
 def getOperatorsList():
 	operatorList = [
+		"(type)*",
+		"sizeof",
 		"<<",
 		">>",
 		"<=",
 		">=",
 		"==",
 		"!=",
-		"^",
 		"?:",
 		"+=",
 		"-=",
@@ -33,10 +34,9 @@ def getOperatorsList():
 		"++",
 		"--",
 		"||",
-		"(type)*",
-		"sizeof",
 		"&&",
 		"&",
+		"^",
 		"*",
 		"/",
 		"%",
@@ -86,33 +86,59 @@ def getOperators(projectFiles, csv=False, csvList=[]):
 		#print copiedFiles
 	#print copiedFiles
 
-	# Remove all special characters from words to ensure correct matching
+	#Begin matching word by word for operator matching
 
-		#for line in parse:
-			#test = re.sub(r'[^A-Za-z0-9 ]+', r' ', line)
+	stringStart = 0
+	stringEnd = 99999
+	testCount = 0
 	i=0
+	j=0
+	outerBreak = False
+	foundFlag = False
+	
+	#Look through each file one at a time
 	for files in copiedFiles:
+		#Look through each unique "word" one at a time
 		for word in files:
 			#print word
+			#Set the start and end of the word string to search for operators
+			stringStart = 0
+			stringEnd = len(word)
 			for operator in operatorsList[0]:
-				#if operator == "->":
-					#print "found it"
-				if operator in word and foundBreak == False:
-					totalCount = totalCount+1
-					foundBreak = True
-					operatorsList[1][i] = operatorsList[1][i]+1
+			#while (outerBreak == False):
+				#print j
+				#operator = operatorsList[0][j]
+				#print operator
+				#foundFlag = False
+				while (foundBreak == False):
+
+					stringIndex = word.find(operator,stringStart, stringEnd)
+					if stringIndex > -1:
+						foundFlag = True
+						#print stringIndex
+						totalCount = totalCount+1
+						#foundBreak = True
+						stringStart = stringIndex+len(operator)
+						operatorsList[1][i] = operatorsList[1][i]+1
+						#if (operator == "->"):
+							#testCount=testCount+1
+							#print "string start =",stringStart
+					else:
+						foundBreak = True
+					if (j==len(operatorsList[0])-1):
+						foundBreak = True
 				i=i+1
+				foundBreak = False
 			i=0
-			foundBreak = False
+			#if (testCount >= 1):
+				#print "NUMBER OF arrows IN WORD", word, ":",testCount
+			testCount = 0
+
 	i=0
 	for entry in operatorsList[1]:
 		if entry != 0:
 			#print operatorsList[0][i]
 			uniqueOperatorCount = uniqueOperatorCount + 1
-		#else:
-			#print operatorsList[0][i]
-			#print operatorsList[0][i], operatorsList[1][i]
-			#uniqueOperatorCount = uniqueOperatorCount + 1
 		i=i+1
 	if (csv == False):
 		print "Total number of operators across all files =",totalCount

@@ -1,0 +1,38 @@
+{
+    "compliance": 
+     {
+		"folderNames": [
+			"bin",
+			"include",
+			"src"
+		],
+		"fileNames": [
+			"src/GEDCOMparser.c",
+			"src/LinkedListAPI.c",
+			"include/GEDCOMparser.h",
+			"include/LinkedListAPI.h"
+		],
+		"readmeCategories": [
+			"Student Identification",
+			"Known Issues",
+			"List of References"
+		],
+		"outputFiles": [
+			"GEDCOMFindPerson.o",	
+			"GEDCOMTestDelete.o",	
+			"LinkedListAPI.o",
+			"GEDCOMGetDescendants.o",	
+			"GEDCOMTestPrint.o",	
+			"ListTestCases.o",
+			"GEDCOMInvalidFiles.o",	
+			"GEDCOMTestUtilities.o",	
+			"TestFunctions.o",
+			"GEDCOMPrintError.o",	
+			"GEDCOMparser.o",		
+			"TestHarness.o",
+			"GEDCOMTest.o",		
+			"GEDCOMtests",
+			"GEDCOMTestCreate.o"
+		]
+	}
+}

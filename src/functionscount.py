@@ -44,6 +44,7 @@ def getCtagsInfo(filesToRead):
 		#print functionFile,",",functionString
 		allEntries.append(functionFile+" "+functionString)
 		#print functions
+	#print allEntries
 	os.remove("files_to_read.txt")
 	return allEntries
 	

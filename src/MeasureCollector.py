@@ -21,11 +21,17 @@ def measureManager(idirectory, csv=False, csvList=[]):
 	projectFiles = [os.path.join(dirpath, f)
 		for dirpath, dirnames, files in os.walk(idirectory)
 		for f in files if (f.endswith('.c')) or (f.endswith('.h'))]
-	if (csv == False):
-		print "---------- Measures for directory", idirectory,"----------"
+
 	SLOCTotalCount, csvList = CountLOC(projectFiles, csv, csvList)
 	csvList = calcUnique(projectFiles, csv, csvList)
 	csvList = getKeywordCount(projectFiles, csv, csvList)
+	if len(projectFiles) == 0:
+		csvList.append(0)
+		csvList.append(0)
+		csvList.append(0)
+		csvList.append(0)
+		csvList.append(0)
+		return csvList
 	functionsCount, csvList = countFunctions(projectFiles, csv, csvList)
 	if (csv == False):
 		if (functionsCount != 0):

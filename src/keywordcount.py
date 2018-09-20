@@ -25,8 +25,14 @@ def getNonLoop(flow, flowCount, projectFileCount, csv=False):
 	
 	if (csv == False):
 		print "Total number of non-loop conditional keywords =", foundCount
-		print "Average number of non-loop conditional keywords per module=", foundCount / float(projectFileCount)
-	return foundCount, foundCount / float(projectFileCount)
+		if (projectFileCount == 0):
+			print "Average number of non-loop conditional keywords per module = 0"
+		else:
+			print "Average number of non-loop conditional keywords per module =", foundCount / float(projectFileCount)
+	foundAverage = 0
+	if (projectFileCount != 0):
+		return foundCount, foundCount / float(projectFileCount)
+	return foundCount, 0
 
 def getKeywordCount(projectFiles, csv=False, csvList=[]):
 	fileIndex = 1
@@ -71,16 +77,28 @@ def getKeywordCount(projectFiles, csv=False, csvList=[]):
 	type, flow = separateKeywords(keywords,talliedTotals)
 	if (csv == False):
 		print "Total number of type keywords =", sum(type[1])
-		print "Average number of type keywords per module =", sum(type[1]) / float(len(projectFiles))
+		if (len(projectFiles) == 0):
+			print "Average number of type keywords per module = 0"
+		else:
+			print "Average number of type keywords per module =", sum(type[1]) / float(len(projectFiles))
 		print "Total number of flow keywords =", sum(flow[1])
-		print "Average number of flow keywords per module =", sum(flow[1]) / float(len(projectFiles))
+		if (len(projectFiles) == 0):
+			print "Average number of flow keywords per module = 0"
+		else:
+			print "Average number of flow keywords per module =", sum(flow[1]) / float(len(projectFiles))
 	total, average = getNonLoop(flow[0], flow[1], len(projectFiles), csv)
 	
 	if (csv==True):
 		csvList.append(sum(type[1]))
-		csvList.append(round(sum(type[1]) / float(len(projectFiles)),2))
+		if (len(projectFiles) != 0):
+			csvList.append(round(sum(type[1]) / float(len(projectFiles)),2))
+		else:
+			csvList.append(0)
 		csvList.append(sum(flow[1]))
-		csvList.append(round(sum(flow[1]) / float(len(projectFiles)),2))
+		if (len(projectFiles) != 0):
+			csvList.append(round(sum(flow[1]) / float(len(projectFiles)),2))
+		else:
+			csvList.append(0)
 		csvList.append(round(float(total),2))
 		csvList.append(round(float(average),2))
 		return csvList

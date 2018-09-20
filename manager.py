@@ -17,60 +17,71 @@ from compiletest import compileManager
 
 def main(argv):
 	i=0
+	j=1
 	anon=False
 	runHarness=False
 	showErrors=False
+	broadcastFolder=False
 	csvFileAddress = "output.csv"
 	csvList = []
-	idirectory = ''
+	idirectory = 'studentfolders'
+	chosenSubmission = ""
 	#Make sure a file directory is provided
-	if (len(argv) <= 1):
-		print "Please provide a directory to search for C files."
-		sys.exit()
-	else:
+	#if (len(argv) <= 1):
+		#print "Please provide a directory to search for C files."
+		#sys.exit()
+	#else:
 		#Get command line arguments and put them into list
-		options = { 'tool':'', 'directory':'', 'jsonInput':'', 'ifsOff':'',
-					'csv':'', 'output':'', 'anon':'','runharness':'','showerrors':'','help':''
-					}
+	options = { 'tool':'', 'directory':'', 'jsonInput':'', 'ifsOff':'',
+				'csv':'', 'output':'','runharness':'','showerrors':'','help':'', 'submission':''
+				}
 
-		# define command line arguments and check if the script call is valid
-		opts, args = getopt.getopt(argv,'t:d:j:i:co:areh',
-			['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','anon','runharness','help'])
-		
-		#Set options and tool being selected
-		#Currentl only grabs includecheck.py but can be expanded in the future
-		for opt, arg in opts:
-			if opt in ('--tool', '-t'):
-				options['tool'] = arg
-			elif opt in ('directory', '-d'):
-				idirectory = arg
-				if not (os.path.isdir(idirectory)):
-					sys.stderr.write( 'Error. Directory ' + idirectory + ' does not exist.\n' )
-					sys.exit()
-			elif opt in ('--jsonInput', '-j'):
-				options['jsonInput'] = arg
-			elif opt in ('--ifsOff', '-i'):
-				options['ifs'] = False
-			elif opt in ('--csv', '-c'):
-				options['csv'] = True
-			elif opt in ('--output', '-o'):
-				#print arg
-				csvFileAddress = arg
-			elif opt in ('--anon', '-a'):
-				#print arg
-				anon = True
-			elif opt in ('--runharness', '-r'):
-				#print arg
-				runHarness = True
-			elif opt in ('--showerrors', '-e'):
-				#print arg
-				showErrors = True
+	# define command line arguments and check if the script call is valid
+	opts, args = getopt.getopt(argv,'t:d:j:i:co:vbhs:',
+		['tool=','directory=', 'jsonInput=', 'ifsOff=', 'csv','output=','verbose','broadcast','help', 'submission'])
+	
+	#Set options and tool being selected
+	#Currentl only grabs includecheck.py but can be expanded in the future
+	for opt, arg in opts:
+		if opt in ('--tool', '-t'):
+			options['tool'] = arg
+		elif opt in ('directory', '-d'):
+			idirectory = arg
+			if not (os.path.isdir(idirectory)):
+				sys.stderr.write( 'Error. Directory ' + idirectory + ' does not exist.\n' )
+				sys.exit()
+		elif opt in ('--jsonInput', '-j'):
+			options['jsonInput'] = arg
+		elif opt in ('--ifsOff', '-i'):
+			options['ifs'] = False
+		elif opt in ('--csv', '-c'):
+			options['csv'] = True
+		elif opt in ('--output', '-o'):
+			#print arg
+			csvFileAddress = arg
+		elif opt in ('--verbose', '-v'):
+			#print arg
+			showErrors = True
+			runHarness = True
+		elif opt in ('--broadcast', '-b'):
+			broadcastFolder = True
+		elif opt in ('--submission', '-s'):
+			if (str(arg).upper() != "A1" and str(arg).upper() != "A2" and str(arg).upper() != "A1R" and str(arg).upper() != "A2R"):
+				#print str(opt).upper()
+				print "ERROR: Chosen assignment to parse is invalid. Please choose A1, A2, A1R or A2R."
+				return -1
+			else:
+				chosenSubmission = arg.upper()
 
 
-		if idirectory != '':
-			options['dir'] = idirectory
+	if idirectory != '':
+		options['dir'] = idirectory
 	#print options['csv']
 	
+	if (chosenSubmission == ""):
+		print "ERROR: Please use the [-s <Assignment>] flag and  assignment to parse is invalid. Current options are A1, A2, A1R or A2R."
+		return -1
+		
 	studentFiles = glob.glob(idirectory+'/*')
 	studentFolders = filter(lambda f: os.path.isdir(f), studentFiles)
 	#print studentFolders
@@ -78,9 +89,14 @@ def main(argv):
 		print "---------- BEGINNING CALCULATION ----------"
 	
 		for folder in studentFolders:
+			i=i+1
+			username = folder
+				
+			print "---------- Measures for user", username,"----------"
 			measureManager(folder)
-			complianceManager(folder)
-			csvListCompilation = compileManager(folder, runHarness, showErrors)
+			#complianceManager(folder)
+			print "---------- Compliance for user", username,"----------"
+			compileManager(folder, runHarness, showErrors)
 			print ''
 	else:
 		with open(csvFileAddress,'wb') as csvFile:
@@ -110,26 +126,31 @@ def main(argv):
 			'Missing-Expected-Files',
 			'Extra-Non-Specification-Files',
 			'Missing-Expected-Functions',
-			'Expected-Readme-Headings-Missing',
+			#'Expected-Readme-Headings-Missing',
 			'Total-number-of-improper/hardcoded-include-paths',
+			'Number-Of-Missing-Output-Files',
 			'Compilation-Success'])
 			
 			print "---------- BEGINNING CSV FILE WRITING ----------"
 
 			for folder in studentFolders:
+				trash, folderNoRoot = folder.split("/")
+				if broadcastFolder == True:
+					print "PARSING", folderNoRoot
+					print "Folder #",j
+					j=j+1
 				i=i+1
 				csvListMeasure = []
 				csvListCompliance = []
 				csvListCompilation = []
 				csvList = []
+				#print "---------------------------------------------------------------"
+				#print "User", folderNoRoot
 				csvListMeasure = measureManager(folder, True, csvListMeasure)
-				csvListCompliance = complianceManager(folder, True, csvListCompliance)
-				csvListCompilation = compileManager(folder, runHarness, showErrors, True, csvListCompilation)
-				if (anon == True):
-					userName = "user"+str(i)
-					csvList = [userName]+csvListMeasure + csvListCompliance + csvListCompilation
-				else:
-					csvList = [folder]+csvListMeasure + csvListCompliance + csvListCompilation
+				#csvListCompliance = complianceManager(folder, True, csvListCompliance)
+				csvListCompilation = compileManager(folder, runHarness, showErrors, chosenSubmission, True, csvListCompilation)
+				userName = folderNoRoot
+				csvList = [userName]+csvListMeasure + csvListCompliance + csvListCompilation
 				#print ''
 				#print csvList
 				filewriter.writerow(csvList)

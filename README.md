@@ -15,20 +15,27 @@ Navigate to the MeasureCollector folder. Extract all student folders which are b
 
 Type "make" into the terminal to extract the test harness and ensure folders are all named correctly
 
-4. Execution
+4. Unzip all zipped folders
+
+Type "make extract" to unzip all zipped files. Tar files and others won't work just yet.
+
+5. Execution
 
 Once all the student code is extracted in this format, do the following:
 
-In the MeasureCollector folder, type 'python manager.py -d studentfolders [-c] [-a] [-r] [-e] [-o <output/file/location.csv>] '.
+In the MeasureCollector folder, type 'python manager.py [-c] [-s <Assignment>] [-v] [-o <output/file/location.csv>] '.
 
 Optional Flags
 -c indicates a CSV output file will be generated based on the results of the parsing.
 -o will indicate the output file name and location of the csv file, with a default of output.csv. The tool will not print output to the screen other than a starting notice or error notices when running with -c.
--a anonymizes the user submission folder names
--r will run the test harness and give a score to the user. Should only be used for preliminary testing purposes and gathering a score for measure tracking, SHOULD NOT be in student version
--e will display any command line errors encountered when compiling
+-v will give verbose output to the user. This involves two different elements:
+    Will run the test harness and give a score to the user. Should only be used for preliminary testing purposes and gathering a score for measure tracking.
+    Will display any command line errors encountered when compiling.
+-s will let you specify "A1", "A2", "A1R" or "A2R" as the target assignment to measure compliance against. A1R and A2R are the commands for the A1 resubmission and the A2 resubmission.
 
 Notes:
+
+For the current version of the software, you need to delete ALL the contents inside "studentfolders" to switch between A1 and A2 submissions. The software currently cannot handle having two different groups of submission content in the folder at once and only A1 content should be present when running an A1 test, A2 content should only be present for an A2 test, etc.
 
 Type 'make clean' in the directory to destroy the compiletest folder. The studentfolders folder wil not be emptied.
 
