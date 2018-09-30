@@ -48,99 +48,31 @@ def getReferenceFunctions():
 				"void deleteField(void* toBeDeleted)",
 				"void deleteGEDCOM(GEDCOMobject* obj)",
 				"void deleteIndividual(void* toBeDeleted)"]]
-				
-def getReferenceFunctionsA2():
-	return ["GEDCOMparser.c", [
-				"char* printError(GEDCOMerror err)",
-				"char* printEvent(void* toBePrinted)",
-				"char* printFamily(void* toBePrinted)",
-				"char* printField(void* toBePrinted)",
-				"char* printGEDCOM(const GEDCOMobject* obj)",
-				"char* printIndividual(void* toBePrinted)",
-				"GEDCOMerror createGEDCOM(char* fileName, GEDCOMobject** obj)",
-				"Individual* findPerson(const GEDCOMobject* familyRecord, bool(*compare)(const void* first,const void* second), const void* person)",
-				"int compareEvents(const void* first, const void* second)",
-				"int compareFamilies(const void* first, const void* second)",
-				"int compareFields(const void* first, const void* second)",
-				"int compareIndividuals(const void* first, const void* second)",
-				"List getDescendants(const GEDCOMobject* familyRecord, const Individual* person)",
-				"void deleteEvent(void* toBeDeleted)",
-				"void deleteFamily(void* toBeDeleted)",
-				"void deleteField(void* toBeDeleted)",
-				"void deleteGEDCOM(GEDCOMobject* obj)",
-				"void deleteIndividual(void* toBeDeleted)",
-				"GEDCOMerror writeGEDCOM(char* fileName, const GEDCOMobject* obj)",
-				"ErrorCode validateGEDCOM(const GEDCOMobject* obj)",
-				"List getDescendantListN(const GEDCOMobject* familyRecord, const Individual* person, unsigned int maxGen)",
-				"List getAncestorListN(const GEDCOMobject* familyRecord, const Individual* person, int maxGen)",
-				"char* indToJSON(const Individual* ind)",
-				"Individual* JSONtoInd(const char* str)",
-				"GEDCOMobject* JSONtoGEDCOM(const char* str)",
-				"void addIndividual(GEDCOMobject* obj, const Individual* toBeAdded)",
-				"char* iListToJSON(List iList)",
-				"char* gListToJSON(List gList)"
-				],
-			"LinkedListAPI.c", [
-				"int getLength(List list)",
-				"void* findElement(List list, bool (*customCompare)(const void* first, const void* second), const void* searchRecord)"
-				]
-			]
 
 def getRegexes():
-	return ["GEDCOMparser.c",["char *\* *printError *\( *GEDCOMerror *[A-za-z]* *\)",
-				"char *\* *printEvent *\( *void *\* *[A-za-z]* *\)",
-				"char *\* *printFamily *\( *void *\* *[A-za-z]* *\)",
-				"char *\* *printField *\( *void *\* *[A-za-z]* *\)",
-				"char *\* *printGEDCOM *\( *const *GEDCOMobject *\* *[A-za-z]* *\)",
-				"char *\* *printIndividual *\( *void *\* *[A-za-z]* *\)",
-				"GEDCOMerror *createGEDCOM *\( *char *\* *[A-za-z]* *, *GEDCOMobject *\*\* *[A-za-z]* *\)",
-				"Individual *\* *findPerson *\( *const *GEDCOMobject *\* *[A-za-z]* *, *bool *\( *\* *compare *\) *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-za-z]* *\) *, *const *void *\* *[A-za-z]* *\)",
-				"int *compareEvents *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-Za-z]* *\)",
-				"int *compareFamilies *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-Za-z]* *\)",
-				"int *compareFields *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-Za-z]* *\)",
-				"int *compareIndividuals *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-Za-z]* *\)",
-				"List *getDescendants *\( *const *GEDCOMobject *\* *[A-za-z]* *, *const *Individual *\* *[A-Za-z]* *\)",
-				"void *deleteEvent *\( *void *\* *[A-za-z]* *\)",
-				"void *deleteFamily *\( *void *\* *[A-za-z]* *\)",
-				"void *deleteField *\( *void *\* *[A-za-z]* *\)",
-				"void *deleteGEDCOM *\( *GEDCOMobject *\* *[A-za-z]* *\)",
-				"void *deleteIndividual *\( *void *\* *[A-za-z]* *\)"]]
-def getRegexesA2():
-	return ["GEDCOMparser.c",[
-				"char *\* *printError *\( *GEDCOMerror *[A-za-z]* *\)",
-				"char *\* *printEvent *\( *void *\* *[A-za-z]* *\)",
-				"char *\* *printFamily *\( *void *\* *[A-za-z]* *\)",
-				"char *\* *printField *\( *void *\* *[A-za-z]* *\)",
-				"char *\* *printGEDCOM *\( *const *GEDCOMobject *\* *[A-za-z]* *\)",
-				"char *\* *printIndividual *\( *void *\* *[A-za-z]* *\)",
-				"GEDCOMerror *createGEDCOM *\( *char *\* *[A-za-z]* *, *GEDCOMobject *\*\* *[A-za-z]* *\)",
-				"Individual *\* *findPerson *\( *const *GEDCOMobject *\* *[A-za-z]* *, *bool *\( *\* *compare *\) *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-za-z]* *\) *, *const *void *\* *[A-za-z]* *\)",
-				"int *compareEvents *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-Za-z]* *\)",
-				"int *compareFamilies *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-Za-z]* *\)",
-				"int *compareFields *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-Za-z]* *\)",
-				"int *compareIndividuals *\( *const *void *\* *[A-za-z]* *, *const *void *\* *[A-Za-z]* *\)",
-				"List *getDescendants *\( *const *GEDCOMobject *\* *[A-za-z]* *, *const *Individual *\* *[A-Za-z]* *\)",
-				"void *deleteEvent *\( *void *\* *[A-za-z]* *\)",
-				"void *deleteFamily *\( *void *\* *[A-za-z]* *\)",
-				"void *deleteField *\( *void *\* *[A-za-z]* *\)",
-				"void *deleteGEDCOM *\( *GEDCOMobject *\* *[A-za-z]* *\)",
-				"void *deleteIndividual *\( *void *\* *[A-za-z]* *\)",
-				"GEDCOMerror *writeGEDCOM *\( *char *\* *[A-Za-z]* *, *const *GEDCOMobject *\* *[A-Za-z]*\)",
-				"ErrorCode *validateGEDCOM *\( *const *GEDCOMobject *\* *[A-Za-z]* *\)",
-				"List *getDescendantListN *\( *const *GEDCOMobject *\* *[A-Za-z]* *, *const *Individual *\* *[A-Za-z]* *, *unsigned *int *[A-Za-z]* *\)",
-				"List *getAncestorListN *\( *const *GEDCOMobject *\* *[A-Za-z]* *, *const *Individual *\* *[A-Za-z]* *, *int *[A-Za-z]* *\)",
-				"char *\* *indToJSON *\( *const *Individual *\* *[A-Za-z]* *\)",
-				"Individual *\* *JSONtoInd *\( *const *char *\* *[A-Za-z]* *\)",
-				"GEDCOMobject *\* *JSONtoGEDCOM *\( *const *char *\* *[A-Za-z]* *\)",
-				"void *addIndividual *\( *GEDCOMobject *\* *[A-Za-z]* *, *const *Individual *\* *[A-Za-z]* *\)",
-				"char *\* *iListToJSON *\( *List *[A-Za-z]* *\)",
-				"char *\*gListToJSON *\( *List *[A-Za-z]* *\)"
-			],
-			"LinkedListAPI.c", [
-				"int *getLength *\( *List *[A-Za-z]* *\)",
-				"void *\* *findElement *\( *List *[A-Za-z]* *, *bool *\( *\* *[A-Za-z]* *\) *\( *const *void *\* *[A-Za-z]* *, *const *void *\* *[A-Za-z]* *\) *, *const *void *\* *[A-Za-z]* *\)"
-			]
-		]
+	return ["VCardParser.c",["VCardErrorCode *createCard *\( *char *\* *fileName *, *Card *\*\* *obj *\) *;",
+
+"char *\* *printCard *\( *const *Card *\* *obj *\) *\;",
+
+"void *deleteCard *\( *Card *\* *obj *\) *\;",
+
+"const *char *\* *printError *\( *VCardErrorCode *err *\) *;",
+
+"void *deleteProperty *\( *void *\* *toBeDeleted *\) *;",
+"int *compareProperties *\( *const *void *\* *first *\, *const *void *\* *second *\) *;",
+"char *\* *printProperty *\( *void *\* *toBePrinted *\) *;",
+
+"void *deleteParameter *\( *void *\* *toBeDeleted *\) *;",
+"int *compareParameters *\( *const *void *\* *first *\, *const *void *\* *second *\) *;",
+"char *\* *printParameter *\( *void *\* *toBePrinted *\) *;",
+
+"void *deleteValue *\( *void *\* *toBeDeleted *\) *;",
+"int *compareValues *\( *const *void *\* *first *\, *const *void *\* *second *\) *;",
+"char *\* *printValue *\( *void *\* *toBePrinted *\) *;",
+
+"void *deleteDate *\( *void *\* *toBeDeleted *\) *;",
+"int *compareDates *\( *const *void *\* *first *\, *const *void *\* *second *\) *;",
+"char *\* *printDate *\( *void *\* *toBePrinted *\) *;"]]
 	
 
 #Parse the JSON string for information and translate that into a list which can be interpreted by other functions
